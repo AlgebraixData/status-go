@@ -119,14 +119,22 @@ func (jail *Jail) Call(chatID string, path string, args string) string {
 
 	// Due to the new timer assigned we need to clone existing cell to allow
 	// unique cell runtime and eventloop context.
-	cellCopy, err := cell.Copy()
-	if err != nil {
-		return makeError(err.Error())
-	}
+	// cellCopy, err := cell.Copy()
+	// if err != nil {
+	// 	return makeError(err.Error())
+	// }
 
 	// isolate VM to allow concurrent access
-	vm := cellCopy.CellVM()
+	vm := cell.CellVM()
 	res, err := vm.Call("call", nil, path, args)
+
+	// Due to the new event loop provided by ottoext.
+	// We need to ensure that all possible calls to internal setIntervals/SetTimeouts/SetImmediate
+	// work by lunching the loop.Run() method.
+	// Needs to be done in a go-routine.
+	// TODO(influx6): Figure out if we should do a throw Exception for returned error
+	// from loop.Run() call.
+	go cell.CellLoop().Run()
 
 	return makeResult(res.String(), err)
 }

@@ -196,6 +196,75 @@ func (s *JailTestSuite) TestJailFetch() {
 	<-wait
 }
 
+func (s *JailTestSuite) TestJailLoopInCall() {
+	require := s.Require()
+	require.NotNil(s.jail)
+
+	s.StartTestNode(params.RopstenNetworkID)
+	defer s.StopTestNode()
+
+	// load Status JS and add test command to it
+	s.jail.BaseJS(baseStatusJSCode)
+	s.jail.Parse(testChatID, ``)
+
+	cell, err := s.jail.GetCell(testChatID)
+	require.NoError(err)
+	require.NotNil(cell)
+
+	cellVM := cell.CellVM()
+	require.NotNil(cellVM)
+
+	cellLoop := cell.CellLoop()
+	require.NotNil(cellLoop)
+
+	items := make(chan string)
+
+	err = cellVM.Set("__captureResponse", func(val string) otto.Value {
+		items <- val
+
+		return otto.UndefinedValue()
+	})
+	require.NoError(err)
+
+	execr := cell.Executor()
+
+	_, err = execr.Run(`
+		function callRunner(namespace){
+			console.log("Initiating callRunner for: ", namespace)
+			return setInterval(function(){
+				__captureResponse(namespace);
+			}, 1000);
+		}
+	`)
+	require.NoError(err)
+
+	// NOTE: Fails to work because it's running intirely
+	_, err = cellVM.Call("callRunner", nil, "softball")
+	require.NoError(err)
+
+	go func() {
+		require.NoError(cellLoop.Run())
+	}()
+
+	var count int
+
+	for {
+		if count >= 3 {
+			break
+		}
+
+		select {
+		case received := <-items:
+			require.Equal(received, "softball")
+			count++
+			break
+
+		case <-time.After(5 * time.Second):
+			require.Fail("Failed to received event response")
+		}
+	}
+}
+
 func (s *JailTestSuite) TestJailRPCSend() {
 	require := s.Require()
 	require.NotNil(s.jail)
