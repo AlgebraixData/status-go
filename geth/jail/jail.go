@@ -46,17 +46,39 @@ func (jail *Jail) BaseJS(js string) {
 }
 
 // NewJailCell initializes and returns jail cell
-func (jail *Jail) NewJailCell(id string) common.JailCell {
+func (jail *Jail) NewJailCell(id string) (common.JailCell, error) {
+	if jail == nil {
+		return nil, ErrInvalidJail
+	}
+
 	vm := otto.New()
 
 	newJail, err := newJailCell(id, vm, loop.New(vm))
 	if err != nil {
-		//TODO(alex): Should we really panic here, his there
-		// a better way. Think on it.
-		panic(err)
+		return nil, err
 	}
 
-	return newJail
+	jail.RLock()
+	{
+		jail.cells[id] = newJail
+	}
+	jail.RUnlock()
+
+	return newJail, nil
+}
+
+// GetCell returns instance of jailed runtime
+func (jail *Jail) GetCell(chatID string) (common.JailCell, error) {
+
+	jail.RLock()
+	defer jail.RUnlock()
+
+	cell, ok := jail.cells[chatID]
+	if !ok {
+		return nil, fmt.Errorf("cell[%s] doesn't exist", chatID)
+	}
+
+	return cell, nil
 }
 
 // Parse creates a new jail cell context, with the given chatID as identifier.
@@ -67,22 +89,28 @@ func (jail *Jail) Parse(chatID string, js string) string {
 		return makeError(ErrInvalidJail.Error())
 	}
 
-	jail.Lock()
-	defer jail.Unlock()
+	cell, err := jail.NewJailCell(chatID)
+	if err != nil {
+		return makeError(err.Error())
+	}
 
-	jail.cells[chatID] = jail.NewJailCell(chatID)
-	vm := jail.cells[chatID].CellVM()
+	jcell, _ := cell.(*JailCell)
+
+	jcell.Lock()
+	defer jcell.Unlock()
 
 	initJjs := jail.baseJSCode + ";"
-	if _, err = vm.Run(initJjs); err != nil {
+	if _, err = jcell.vm.Run(initJjs); err != nil {
 		return makeError(err.Error())
 	}
 
 	// init jeth and its handlers
-	if err = vm.Set("jeth", struct{}{}); err != nil {
+
+	if err = jcell.vm.Set("jeth", struct{}{}); err != nil {
 		return makeError(err.Error())
 	}
-	if err = registerHandlers(jail, vm, chatID); err != nil {
+
+	if err = registerHandlers(jail, jcell.vm, chatID); err != nil {
 		return makeError(err.Error())
 	}
 
@@ -94,11 +122,11 @@ func (jail *Jail) Parse(chatID string, js string) string {
             return new Bignumber(val);
         }
 	` + js + "; var catalog = JSON.stringify(_status_catalog);"
-	if _, err = vm.Run(jjs); err != nil {
+	if _, err = jcell.vm.Run(jjs); err != nil {
 		return makeError(err.Error())
 	}
 
-	res, err := vm.Get("catalog")
+	res, err := jcell.vm.Get("catalog")
 	if err != nil {
 		return makeError(err.Error())
 	}
@@ -117,8 +145,15 @@ func (jail *Jail) Call(chatID string, path string, args string) string {
 	}
 	jail.RUnlock()
 
+	jcell, _ := cell.(*JailCell)
+
 	// isolate VM to allow concurrent access
-	vm := cell.CellVM()
+	vm := cell.VM()
+	loop := cell.Loop()
+
+	jcell.Lock()
+	defer jcell.Unlock()
+
 	res, err := vm.Call("call", nil, path, args)
 
 	// WARNING(influx6): We can have go-routine leakage due to continous call to this method
@@ -130,43 +165,27 @@ func (jail *Jail) Call(chatID string, path string, args string) string {
 	// Needs to be done in a go-routine.
 	// TODO(influx6): Figure out if we should do a throw Exception for returned error
 	// from loop.Run() call.
-	go cell.CellLoop().Run()
+	go loop.Run()
 
 	return makeResult(res.String(), err)
 }
 
 // JailCellVM returns instance of Otto VM (which is persisted w/i jail cell) by chatID
+// TODO(influx6): Decide if this make sense now that we are guarding JailCell vm with mutex.
 func (jail *Jail) JailCellVM(chatID string) (*otto.Otto, error) {
 	if jail == nil {
 		return nil, ErrInvalidJail
 	}
 
 	jail.RLock()
-	defer jail.RUnlock()
-
 	cell, ok := jail.cells[chatID]
+	jail.RUnlock()
+
 	if !ok {
 		return nil, fmt.Errorf("cell[%s] doesn't exist", chatID)
 	}
 
-	return cell.CellVM(), nil
-}
-
-// GetCell returns instance of jailed runtime
-func (jail *Jail) GetCell(chatID string) (common.JailCell, error) {
-	if jail == nil {
-		return nil, ErrInvalidJail
-	}
-
-	jail.RLock()
-	defer jail.RUnlock()
-
-	cell, ok := jail.cells[chatID]
-	if !ok {
-		return nil, fmt.Errorf("cell[%s] doesn't exist", chatID)
-	}
-
-	return cell, nil
+	return cell.VM(), nil
 }
 
 // Send will serialize the first argument, send it to the node and returns the response.

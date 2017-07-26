@@ -1,6 +1,7 @@
 package jail
 
 import (
+	"sync"
 	"time"
 
 	"fknsrs.biz/p/ottoext/fetch"
@@ -8,8 +9,6 @@ import (
 	"fknsrs.biz/p/ottoext/timers"
 	"github.com/eapache/go-resiliency/semaphore"
 	"github.com/robertkrimen/otto"
-
-	"github.com/status-im/status-go/geth/common"
 )
 
 const (
@@ -19,8 +18,7 @@ const (
 
 // JailCell represents single jail cell, which is basically a JavaScript VM.
 type JailCell struct {
-	// FIXME(tiabc): It's never called. Double-check and delete.
-	//sync.Mutex
+	sync.Mutex
 
 	id string
 	vm *otto.Otto
@@ -51,19 +49,17 @@ func newJailCell(id string, vm *otto.Otto, lo *loop.Loop) (*JailCell, error) {
 	}, nil
 }
 
-// Copy returns a new JailCell instance with a new eventloop runtime associated with
-// the given cell.
-func (cell *JailCell) Copy() (common.JailCell, error) {
-	vmCopy := cell.vm.Copy()
-	return newJailCell(cell.id, vmCopy, loop.New(vmCopy))
-}
-
 // Fetch attempts to call the underline Fetch API added through the
 // ottoext package.
 func (cell *JailCell) Fetch(url string, callback func(otto.Value)) (otto.Value, error) {
-	if err := cell.vm.Set("__captureFetch", callback); err != nil {
-		return otto.UndefinedValue(), err
+	cell.Lock()
+	{
+		if err := cell.vm.Set("__captureFetch", callback); err != nil {
+			defer cell.Unlock()
+			return otto.UndefinedValue(), err
+		}
 	}
+	cell.Unlock()
 
 	return cell.Exec(`fetch("` + url + `").then(function(response){
 			__captureFetch({
@@ -80,6 +76,9 @@ func (cell *JailCell) Fetch(url string, callback func(otto.Value)) (otto.Value, 
 // Exec evaluates the giving js string on the associated vm loop returning
 // an error.
 func (cell *JailCell) Exec(val string) (otto.Value, error) {
+	cell.Lock()
+	defer cell.Unlock()
+
 	res, err := cell.vm.Run(val)
 	if err != nil {
 		return res, err
@@ -90,21 +89,25 @@ func (cell *JailCell) Exec(val string) (otto.Value, error) {
 
 // Run evaluates the giving js string on the associated vm llop.
 func (cell *JailCell) Run(val string) (otto.Value, error) {
+	cell.Lock()
+	defer cell.Unlock()
+
 	return cell.vm.Run(val)
 }
 
-// CellLoop returns the ottoext.Loop instance which provides underline timeout/setInternval
+// Loop returns the ottoext.Loop instance which provides underline timeout/setInternval
 // event runtime for the Jail vm.
-func (cell *JailCell) CellLoop() *loop.Loop {
+func (cell *JailCell) Loop() *loop.Loop {
+	cell.Lock()
+	defer cell.Unlock()
+
 	return cell.lo
 }
 
-// Executor returns a structure which implements the common.JailExecutor.
-func (cell *JailCell) Executor() common.JailExecutor {
-	return cell
-}
+// VM returns the associated otto.Vm connect to the giving cell.
+func (cell *JailCell) VM() *otto.Otto {
+	cell.Lock()
+	defer cell.Unlock()
 
-// CellVM returns the associated otto.Vm connect to the giving cell.
-func (cell *JailCell) CellVM() *otto.Otto {
 	return cell.vm
 }

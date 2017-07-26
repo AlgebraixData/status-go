@@ -123,13 +123,12 @@ func (s *JailTestSuite) TestJailTimeoutFailure() {
 	require := s.Require()
 	require.NotNil(s.jail)
 
-	newCell := s.jail.NewJailCell(testChatID)
+	newCell, err := s.jail.NewJailCell(testChatID)
+	require.NoError(err)
 	require.NotNil(newCell)
 
-	execr := newCell.Executor()
-
 	// Attempt to run a timeout string against a JailCell.
-	_, err := execr.Exec(`
+	_, err = newCell.Exec(`
 		setTimeout(function(n){
 			if(Date.now() - n < 50){
 				throw new Error("Timedout early");
@@ -146,13 +145,12 @@ func (s *JailTestSuite) TestJailTimeout() {
 	require := s.Require()
 	require.NotNil(s.jail)
 
-	newCell := s.jail.NewJailCell(testChatID)
+	newCell, err := s.jail.NewJailCell(testChatID)
+	require.NoError(err)
 	require.NotNil(newCell)
 
-	execr := newCell.Executor()
-
 	// Attempt to run a timeout string against a JailCell.
-	res, err := execr.Exec(`
+	res, err := newCell.Exec(`
 		setTimeout(function(n){
 			if(Date.now() - n < 50){
 				throw new Error("Timedout early");
@@ -179,15 +177,18 @@ func (s *JailTestSuite) TestJailFetch() {
 	require := s.Require()
 	require.NotNil(s.jail)
 
-	newCell := s.jail.NewJailCell(testChatID)
+	newCell, err := s.jail.NewJailCell(testChatID)
+	require.NoError(err)
 	require.NotNil(newCell)
 
-	execr := newCell.Executor()
+	jcell, ok := newCell.(*jail.JailCell)
+	require.Equal(ok, true)
+	require.NotNil(jcell)
 
 	wait := make(chan struct{})
 
 	// Attempt to run a fetch resource.
-	_, err := execr.Fetch(server.URL, func(res otto.Value) {
+	_, err = jcell.Fetch(server.URL, func(res otto.Value) {
 		go func() { wait <- struct{}{} }()
 	})
 
@@ -211,10 +212,10 @@ func (s *JailTestSuite) TestJailLoopInCall() {
 	require.NoError(err)
 	require.NotNil(cell)
 
-	cellVM := cell.CellVM()
+	cellVM := cell.VM()
 	require.NotNil(cellVM)
 
-	cellLoop := cell.CellLoop()
+	cellLoop := cell.Loop()
 	require.NotNil(cellLoop)
 
 	items := make(chan string)
@@ -226,9 +227,7 @@ func (s *JailTestSuite) TestJailLoopInCall() {
 	})
 	require.NoError(err)
 
-	execr := cell.Executor()
-
-	_, err = execr.Run(`
+	_, err = cellVM.Run(`
 		function callRunner(namespace){
 			console.log("Initiating callRunner for: ", namespace)
 			return setInterval(function(){
