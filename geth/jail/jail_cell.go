@@ -53,12 +53,12 @@ func newJailCell(id string, vm *otto.Otto, lo *loop.Loop) (*JailCell, error) {
 // ottoext package.
 func (cell *JailCell) Fetch(url string, callback func(otto.Value)) (otto.Value, error) {
 	cell.Lock()
-	{
-		if err := cell.vm.Set("__captureFetch", callback); err != nil {
-			defer cell.Unlock()
-			return otto.UndefinedValue(), err
-		}
+	if err := cell.vm.Set("__captureFetch", callback); err != nil {
+		defer cell.Unlock()
+
+		return otto.UndefinedValue(), err
 	}
+
 	cell.Unlock()
 
 	return cell.Exec(`fetch("` + url + `").then(function(response){

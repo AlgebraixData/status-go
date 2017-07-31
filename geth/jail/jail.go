@@ -28,15 +28,15 @@ var (
 type Jail struct {
 	sync.RWMutex
 	requestManager *RequestManager
-	cells          map[string]common.JailCell // jail supports running many isolated instances of jailed runtime
-	baseJSCode     string                     // JavaScript used to initialize all new cells with
+	cells          map[string]*JailCell // jail supports running many isolated instances of jailed runtime
+	baseJSCode     string               // JavaScript used to initialize all new cells with
 }
 
 // New returns new Jail environment
 func New(nodeManager common.NodeManager) *Jail {
 	return &Jail{
+		cells:          make(map[string]*JailCell),
 		requestManager: NewRequestManager(nodeManager),
-		cells:          make(map[string]common.JailCell),
 	}
 }
 
@@ -58,18 +58,20 @@ func (jail *Jail) NewJailCell(id string) (common.JailCell, error) {
 		return nil, err
 	}
 
-	jail.RLock()
-	{
-		jail.cells[id] = newJail
-	}
-	jail.RUnlock()
+	jail.Lock()
+	jail.cells[id] = newJail
+	jail.Unlock()
 
 	return newJail, nil
 }
 
 // GetCell returns instance of jailed runtime
 func (jail *Jail) GetCell(chatID string) (common.JailCell, error) {
+	return jail.getCell(chatID)
+}
 
+// getCell returns the associated *JailCell for the provided chatID.
+func (jail *Jail) getCell(chatID string) (*JailCell, error) {
 	jail.RLock()
 	defer jail.RUnlock()
 
@@ -99,8 +101,8 @@ func (jail *Jail) Parse(chatID string, js string) string {
 	jcell.Lock()
 	defer jcell.Unlock()
 
-	initJjs := jail.baseJSCode + ";"
-	if _, err = jcell.vm.Run(initJjs); err != nil {
+	initJs := jail.baseJSCode + ";"
+	if _, err = jcell.vm.Run(initJs); err != nil {
 		return makeError(err.Error())
 	}
 
@@ -137,19 +139,13 @@ func (jail *Jail) Parse(chatID string, js string) string {
 // Call executes the `call` function w/i a jail cell context identified by the chatID.
 // Jail cell is clonned before call is executed i.e. all calls execute w/i their own contexts.
 func (jail *Jail) Call(chatID string, path string, args string) string {
-	jail.RLock()
-	cell, ok := jail.cells[chatID]
-	if !ok {
-		jail.RUnlock()
-		return makeError(fmt.Sprintf("Cell[%s] doesn't exist.", chatID))
+	jcell, err := jail.getCell(chatID)
+	if err != nil {
+		return makeError(err.Error())
 	}
-	jail.RUnlock()
 
-	jcell, _ := cell.(*JailCell)
-
-	// isolate VM to allow concurrent access
-	vm := cell.VM()
-	loop := cell.Loop()
+	vm := jcell.VM()
+	loop := jcell.Loop()
 
 	jcell.Lock()
 	defer jcell.Unlock()
