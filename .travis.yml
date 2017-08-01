@@ -71,3 +71,9 @@ after_deploy:
 
 after_script:
   - echo "*** $(date '+%Y-%m-%d %H:%M:%S') after_script"
+
+notifications:
+  slack:
+    secure: LppI+UB3X1MTd383mc4vRcXPgUKQDiGQb261ODBpEphHF5odH+oL8Eq4cEzuGGoRlDgcXlfzrBl3QdyEU3UOh83DMWV07NUyZErNHMiiiYTyP4mF8YG9pD/rHYAVBoL1GYoV+R85ABuuNaEvehb1eczNvETT01Y++SbL6lc4HOCRLDj+KW/Cq0M/O4D9xrm71teQIuRWMxIuphY+Y7M2SOq+QoFle7LF5Q4Bo1K8KzjeZtTiONdK1I6RV54DNZDgK37rvrnWJD24pp+6XJBp2GwRqpam85219UUzw34y1EBSiBWUolegYjM8rcoLJhu34/MI1cTnygRZ1aYhhFTjAHYn0Ncw80wCpG8kyvlEQkVappIIXK7n3Yfy4SXmNsLAXMfDVUjdzb4ms/7gBUda2ymnDsmb7pMrU+r2LBoIc0qMQoxhwo4zz4A1WXYezG445vpRqVj69R9GT/q8NuAB/jvFlgfwyq8jtBrxXmXswXjeIZPLeVJ+ktqzhJilFpucYepjVStHVVUq16mnEZwmwVRAe5J6AWDZviajYXeqLhDZDvu2+clie2/s+oH0kw8X58oSvNtRrpDjsrhk4Q27SJ7+df35KyNBwNcxi3XPSsHOmCskE/EfJjKqSboPQzICg/j93YP13IepjI39VlFr/1renxpENFo9G+2tLJxsqao=
+    on_success: change
+    on_failure: always
