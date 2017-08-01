@@ -13,21 +13,31 @@ statusgo-cross: statusgo-android statusgo-ios
 	@ls -ld $(GOBIN)/statusgo-*
 
 statusgo-android: xgo
+	date "+%Y-%m-%d %H:%M:%S"
 	build/env.sh $(GOBIN)/xgo --image farazdagi/xgo --go=$(GO) -out statusgo --dest=$(GOBIN) --targets=android-16/aar -v $(shell build/testnet-flags.sh) ./cmd/statusd
+	date "+%Y-%m-%d %H:%M:%S"
 	@echo "Android cross compilation done."
 
 statusgo-ios: xgo
+	date "+%Y-%m-%d %H:%M:%S"
 	build/env.sh $(GOBIN)/xgo --image farazdagi/xgo --go=$(GO) -out statusgo --dest=$(GOBIN) --targets=ios-9.3/framework -v $(shell build/testnet-flags.sh) ./cmd/statusd
+	date "+%Y-%m-%d %H:%M:%S"
 	@echo "iOS framework cross compilation done."
 
 statusgo-ios-simulator: xgo
+	date "+%Y-%m-%d %H:%M:%S"
 	@build/env.sh docker pull farazdagi/xgo-ios-simulator
+	date "+%Y-%m-%d %H:%M:%S"
 	build/env.sh $(GOBIN)/xgo --image farazdagi/xgo-ios-simulator --go=$(GO) -out statusgo --dest=$(GOBIN) --targets=ios-9.3/framework -v $(shell build/testnet-flags.sh) ./cmd/statusd
+	date "+%Y-%m-%d %H:%M:%S"
 	@echo "iOS framework cross compilation done."
 
 xgo:
+	date "+%Y-%m-%d %H:%M:%S"
 	build/env.sh docker pull farazdagi/xgo
+	date "+%Y-%m-%d %H:%M:%S"
 	build/env.sh go get github.com/karalabe/xgo
+	date "+%Y-%m-%d %H:%M:%S"
 
 statusgo-mainnet:
 	build/env.sh go build -i -o $(GOBIN)/statusgo -v $(shell build/mainnet-flags.sh) ./cmd/statusd
