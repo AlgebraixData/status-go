@@ -2,10 +2,20 @@
 
 ##### TODO
 
--   [x] When building the project, a number of references (look like `go` dependencies) point to their 
-        own repository. These should point into our repo.
--   [ ] Find all references of `farazdagi` and copy the referenced objects (S3 files, gists, Docker images, ...) 
-        or at least make sure we reference something that's guaranteed to be persisting (Docker images with tag?). 
+-   [x] When building the project, a number of Go references  point to their own repository.
+        These should point to our forked repo.
+-   [ ] Review all dependencies and decide which ones we may want to copy/fork.
+-   [ ] A number of external dependencies are committed to to the `status-go` repository.
+        However, the Go files in those dependencies often import the original location. (For
+        example, a number of `btcsuite` projects are committed in
+        status-go/vendor/github.com/btcsuite, but btcsuite/btcd/chaincfg/chainhash/hashfuncs.go
+        contains `import "github.com/btcsuite/fastsha256"`.) I don't know for sure whether this
+        `import` statement references the file as indicated by the URL path or the one that's
+        committed to the repository. It looks to me as if it referenced the original file on
+        Github. If this is correct, cleaning this up would be a significant amount of work.
+-   [ ] Find all references of `farazdagi` and copy the referenced objects (S3 files, gists,
+        Docker images, ...) or at least make sure we reference something that's guaranteed
+        to be persisting (Docker images with tag?).
 
 ##### Observations
 
