@@ -12,10 +12,10 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/les/status"
 	"github.com/ethereum/go-ethereum/log"
-	"github.com/AlgebraixData/status-go-fork/geth/common"
-	"github.com/AlgebraixData/status-go-fork/geth/node"
-	"github.com/AlgebraixData/status-go-fork/geth/params"
-	. "github.com/AlgebraixData/status-go-fork/geth/testing"
+	"github.com/AlgebraixData/status-go/geth/common"
+	"github.com/AlgebraixData/status-go/geth/node"
+	"github.com/AlgebraixData/status-go/geth/params"
+	. "github.com/AlgebraixData/status-go/geth/testing"
 )
 
 func (s *BackendTestSuite) TestSendContractTx() {

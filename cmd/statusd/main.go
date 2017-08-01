@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/AlgebraixData/status-go-fork/geth/api"
-	"github.com/AlgebraixData/status-go-fork/geth/params"
+	"github.com/AlgebraixData/status-go/geth/api"
+	"github.com/AlgebraixData/status-go/geth/params"
 	"gopkg.in/urfave/cli.v1"
 )
 

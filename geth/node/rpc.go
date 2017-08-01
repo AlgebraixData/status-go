@@ -11,7 +11,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/les/status"
 	"github.com/ethereum/go-ethereum/log"
-	"github.com/AlgebraixData/status-go-fork/geth/common"
+	"github.com/AlgebraixData/status-go/geth/common"
 )
 
 const (

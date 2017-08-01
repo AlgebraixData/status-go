@@ -5,10 +5,10 @@ import (
 	"fmt"
 
 	"github.com/ethereum/go-ethereum/les"
-	"github.com/AlgebraixData/status-go-fork/geth/common"
-	"github.com/AlgebraixData/status-go-fork/geth/node"
-	"github.com/AlgebraixData/status-go-fork/geth/params"
-	. "github.com/AlgebraixData/status-go-fork/geth/testing"
+	"github.com/AlgebraixData/status-go/geth/common"
+	"github.com/AlgebraixData/status-go/geth/node"
+	"github.com/AlgebraixData/status-go/geth/params"
+	. "github.com/AlgebraixData/status-go/geth/testing"
 )
 
 func (s *BackendTestSuite) TestAccountsList() {

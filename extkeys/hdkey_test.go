@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/AlgebraixData/status-go-fork/extkeys"
+	"github.com/AlgebraixData/status-go/extkeys"
 )
 
 func TestBIP32Vectors(t *testing.T) {

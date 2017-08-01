@@ -1,7 +1,7 @@
 #### Repository forked from [status-im/status-go](https://github.com/status-im/status-go)
 
-[![Master Build Status](https://img.shields.io/travis/AlgebraixData/status-go-fork.svg?label=build/master&brach=master)](https://github.com/AlgebraixData/status-go-fork/tree/master) 
-[![Develop Build Status](https://img.shields.io/travis/AlgebraixData/status-go-fork.svg?label=build/develop&branch=develop)](https://github.com/AlgebraixData/status-go-fork/tree/develop)
+[![Master Build Status](https://img.shields.io/travis/AlgebraixData/status-go-fork.svg?label=build/master&brach=master)](https://github.com/AlgebraixData/status-go/tree/master) 
+[![Develop Build Status](https://img.shields.io/travis/AlgebraixData/status-go-fork.svg?label=build/develop&branch=develop)](https://github.com/AlgebraixData/status-go/tree/develop)
 [![TravisCI Builds](https://img.shields.io/badge/TravisCI-URL-yellowgreen.svg?link=https://travis-ci.org/AlgebraixData/status-go-fork)](https://travis-ci.org/AlgebraixData/status-go-fork)
 
 Original content below.

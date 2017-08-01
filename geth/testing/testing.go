@@ -10,8 +10,8 @@ import (
 	"strings"
 
 	gethcommon "github.com/ethereum/go-ethereum/common"
-	"github.com/AlgebraixData/status-go-fork/geth/common"
-	"github.com/AlgebraixData/status-go-fork/geth/params"
+	"github.com/AlgebraixData/status-go/geth/common"
+	"github.com/AlgebraixData/status-go/geth/params"
 	assertions "github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )

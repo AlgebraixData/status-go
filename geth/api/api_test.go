@@ -9,9 +9,9 @@ import (
 	"time"
 
 	"github.com/ethereum/go-ethereum/log"
-	"github.com/AlgebraixData/status-go-fork/geth/api"
-	"github.com/AlgebraixData/status-go-fork/geth/params"
-	. "github.com/AlgebraixData/status-go-fork/geth/testing"
+	"github.com/AlgebraixData/status-go/geth/api"
+	"github.com/AlgebraixData/status-go/geth/params"
+	. "github.com/AlgebraixData/status-go/geth/testing"
 	"github.com/stretchr/testify/suite"
 )
 

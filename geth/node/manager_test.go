@@ -14,9 +14,9 @@ import (
 	gethnode "github.com/ethereum/go-ethereum/node"
 	"github.com/ethereum/go-ethereum/rpc"
 	whisper "github.com/ethereum/go-ethereum/whisper/whisperv5"
-	"github.com/AlgebraixData/status-go-fork/geth/node"
-	"github.com/AlgebraixData/status-go-fork/geth/params"
-	. "github.com/AlgebraixData/status-go-fork/geth/testing"
+	"github.com/AlgebraixData/status-go/geth/node"
+	"github.com/AlgebraixData/status-go/geth/params"
+	. "github.com/AlgebraixData/status-go/geth/testing"
 	"github.com/stretchr/testify/suite"
 )
 

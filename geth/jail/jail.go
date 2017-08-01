@@ -11,8 +11,8 @@ import (
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/robertkrimen/otto"
-	"github.com/AlgebraixData/status-go-fork/geth/common"
-	"github.com/AlgebraixData/status-go-fork/static"
+	"github.com/AlgebraixData/status-go/geth/common"
+	"github.com/AlgebraixData/status-go/static"
 
 	"fknsrs.biz/p/ottoext/fetch"
 	"fknsrs.biz/p/ottoext/loop"

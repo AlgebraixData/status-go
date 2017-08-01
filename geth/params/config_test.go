@@ -11,8 +11,8 @@ import (
 
 	"github.com/ethereum/go-ethereum/core"
 	gethparams "github.com/ethereum/go-ethereum/params"
-	"github.com/AlgebraixData/status-go-fork/geth/params"
-	. "github.com/AlgebraixData/status-go-fork/geth/testing"
+	"github.com/AlgebraixData/status-go/geth/params"
+	. "github.com/AlgebraixData/status-go/geth/testing"
 )
 
 var loadConfigTestCases = []struct {

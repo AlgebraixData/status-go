@@ -17,11 +17,11 @@ import (
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/les/status"
 	gethparams "github.com/ethereum/go-ethereum/params"
-	"github.com/AlgebraixData/status-go-fork/geth/common"
-	"github.com/AlgebraixData/status-go-fork/geth/node"
-	"github.com/AlgebraixData/status-go-fork/geth/params"
-	. "github.com/AlgebraixData/status-go-fork/geth/testing"
-	"github.com/AlgebraixData/status-go-fork/static"
+	"github.com/AlgebraixData/status-go/geth/common"
+	"github.com/AlgebraixData/status-go/geth/node"
+	"github.com/AlgebraixData/status-go/geth/params"
+	. "github.com/AlgebraixData/status-go/geth/testing"
+	"github.com/AlgebraixData/status-go/static"
 )
 
 const zeroHash = "0x0000000000000000000000000000000000000000000000000000000000000000"

@@ -6,7 +6,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/AlgebraixData/status-go-fork/extkeys"
+	"github.com/AlgebraixData/status-go/extkeys"
 )
 
 type VectorsFile struct {

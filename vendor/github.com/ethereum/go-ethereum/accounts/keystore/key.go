@@ -33,7 +33,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/pborman/uuid"
-	"github.com/AlgebraixData/status-go-fork/extkeys"
+	"github.com/AlgebraixData/status-go/extkeys"
 )
 
 const (

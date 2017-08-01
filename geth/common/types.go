@@ -14,8 +14,8 @@ import (
 	"github.com/ethereum/go-ethereum/rpc"
 	whisper "github.com/ethereum/go-ethereum/whisper/whisperv5"
 	"github.com/robertkrimen/otto"
-	"github.com/AlgebraixData/status-go-fork/geth/params"
-	"github.com/AlgebraixData/status-go-fork/static"
+	"github.com/AlgebraixData/status-go/geth/params"
+	"github.com/AlgebraixData/status-go/static"
 
 	"fknsrs.biz/p/ottoext/loop"
 )
