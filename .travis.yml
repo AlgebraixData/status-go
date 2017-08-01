@@ -42,16 +42,12 @@ after_failure:
 before_deploy:
   - echo "*** $(date '+%Y-%m-%d %H:%M:%S') before_deploy"
   - cp build/index.html build/bin/index.html
-  - pushd build/bin/statusgo-ios-9.3-framework \
-      && zip -ry ../Statusgo-framework.zip Statusgo.framework \
-      && popd \
-      && rm -rf build/bin/statusgo-ios-9.3-framework \
-      && zipinfo build/bin/Statusgo-framework.zip
-  - pushd build/bin/statusgo-ios-9.3-framework-simulator \
-      && zip -ry ../Statusgo-framework-simulator.zip Statusgo.framework \
-      && popd \
-      && rm -rf build/bin/statusgo-ios-9.3-framework-simulator \
-      && zipinfo build/bin/Statusgo-framework-simulator.zip
+  - pushd build/bin/statusgo-ios-9.3-framework && zip -ry ../Statusgo-framework.zip Statusgo.framework && popd
+  - rm -rf build/bin/statusgo-ios-9.3-framework
+  - unzip -l build/bin/Statusgo-framework.zip
+  - pushd build/bin/statusgo-ios-9.3-framework-simulator && zip -ry ../Statusgo-framework-simulator.zip Statusgo.framework && popd
+  - rm -rf build/bin/statusgo-ios-9.3-framework-simulator \
+  - zipinfo build/bin/Statusgo-framework-simulator.zip
   - rm -f build/bin/xgo
 
 deploy:
