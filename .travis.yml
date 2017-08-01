@@ -41,6 +41,7 @@ after_failure:
 
 before_deploy:
   - echo "*** before_deploy"
+  - cp build/index.html build/bin/index.html
 
 deploy:
   provider: pages
