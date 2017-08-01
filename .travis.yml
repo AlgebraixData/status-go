@@ -3,7 +3,10 @@ language: go
 go:
   - 1.8
 
-sudo: false
+sudo: required
+
+services:
+  - docker
 
 dist: trusty
 
