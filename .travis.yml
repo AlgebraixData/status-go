@@ -7,12 +7,42 @@ sudo: false
 
 dist: trusty
 
-install:
-  - go get golang.org/x/tools/cmd/cover
-
-script:
-  - make ci
-
 cache:
   directories:
   - .ethereumtest
+
+before_install:
+  - echo "*** before_install"
+
+install:
+  - echo "*** install"
+  - go get golang.org/x/tools/cmd/cover
+
+before_script:
+  - echo "*** before_script"
+
+script:
+  - echo "*** script"
+  - make statusgo-cross
+  # - make ci # TODO Is broken in original repo, and apparently worse in our fork
+
+before_cache:
+  - echo "*** before_cache"
+
+after_success:
+  - echo "*** after_success"
+
+after_failure:
+  - echo "*** after_failure"
+
+before_deploy:
+  - echo "*** before_deploy"
+
+deploy:
+  - echo "*** deploy"
+
+after_deploy:
+  - echo "*** after_deploy"
+
+after_script:
+  - echo "*** after_script"

@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/ethereum/go-ethereum/log"
-	"github.com/status-im/status-go/geth/params"
+	"github.com/AlgebraixData/status-go-fork/geth/params"
 )
 
 // NotificationDeliveryProvider handles the notification delivery

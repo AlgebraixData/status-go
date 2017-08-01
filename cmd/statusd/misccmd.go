@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/status-im/status-go/geth/params"
+	"github.com/AlgebraixData/status-go-fork/geth/params"
 	"gopkg.in/urfave/cli.v1"
 )
 

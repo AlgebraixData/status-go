@@ -29,8 +29,8 @@ import (
 	"github.com/ethereum/go-ethereum/whisper/mailserver"
 	"github.com/ethereum/go-ethereum/whisper/notifications"
 	whisper "github.com/ethereum/go-ethereum/whisper/whisperv5"
-	"github.com/status-im/status-go/geth/common"
-	"github.com/status-im/status-go/geth/params"
+	"github.com/AlgebraixData/status-go-fork/geth/common"
+	"github.com/AlgebraixData/status-go-fork/geth/params"
 )
 
 // node-related errors

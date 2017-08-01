@@ -26,7 +26,7 @@ if [ ! -L "$PROJECTDIR/status-go" ]; then
     mkdir -p "$PROJECTDIR"
     cd "$PROJECTDIR"
     ln -s "$ROOT" status-go
-    cd "$root"
+    cd "$ROOT"
 fi
 
 # Set up the environment to use the workspace.

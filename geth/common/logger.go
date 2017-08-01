@@ -6,7 +6,7 @@ import (
 	"sync"
 
 	"github.com/ethereum/go-ethereum/log"
-	"github.com/status-im/status-go/geth/params"
+	"github.com/AlgebraixData/status-go-fork/geth/params"
 )
 
 // Logger is wrapper for custom logging

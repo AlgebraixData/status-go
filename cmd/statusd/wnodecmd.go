@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/status-im/status-go/geth/common"
-	"github.com/status-im/status-go/geth/node"
-	"github.com/status-im/status-go/geth/params"
+	"github.com/AlgebraixData/status-go-fork/geth/common"
+	"github.com/AlgebraixData/status-go-fork/geth/node"
+	"github.com/AlgebraixData/status-go-fork/geth/params"
 	"gopkg.in/urfave/cli.v1"
 )
 

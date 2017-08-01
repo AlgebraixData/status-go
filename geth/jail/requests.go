@@ -8,7 +8,7 @@ import (
 	"github.com/ethereum/go-ethereum/les/status"
 	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/robertkrimen/otto"
-	"github.com/status-im/status-go/geth/common"
+	"github.com/AlgebraixData/status-go-fork/geth/common"
 )
 
 const (
