@@ -25,10 +25,9 @@ before_script:
   - echo "*** before_script"
 
 script:
-  - echo "*** script"
   - make statusgo-android
+  - make statusgo-ios-simulator && mv build/bin/statusgo-ios-9.3-framework build/bin/statusgo-ios-9.3-framework-simulator
   - make statusgo-ios
-  # - make statusgo-ios-simulator # TODO Overwrites statusgo-ios result; need to rename.
   # - make ci # TODO Is broken in original repo, and apparently worse in our fork
 
 before_cache:
@@ -43,8 +42,17 @@ after_failure:
 before_deploy:
   - echo "*** before_deploy"
 
-#deploy:
-#  - echo "*** deploy"
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  on:
+    branch:
+      - master
+      - develop
+      - initial-fork
+  local_dir: build/bin
+  target_branch: gh-pages
 
 after_deploy:
   - echo "*** after_deploy"
