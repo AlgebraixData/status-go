@@ -15,14 +15,14 @@ cache:
   - .ethereumtest
 
 before_install:
-  - echo "*** before_install"
+  - echo "*** $(date '+%Y-%m-%d %H:%M:%S') before_install"
 
 install:
-  - echo "*** install"
+  - echo "*** $(date '+%Y-%m-%d %H:%M:%S') install"
   - go get golang.org/x/tools/cmd/cover
 
 before_script:
-  - echo "*** before_script"
+  - echo "*** $(date '+%Y-%m-%d %H:%M:%S') before_script"
 
 script:
   - make statusgo-android
@@ -31,17 +31,28 @@ script:
   # - make ci # TODO Is broken in original repo, and apparently worse in our fork
 
 before_cache:
-  - echo "*** before_cache"
+  - echo "*** $(date '+%Y-%m-%d %H:%M:%S') before_cache"
 
 after_success:
-  - echo "*** after_success"
+  - echo "*** $(date '+%Y-%m-%d %H:%M:%S') after_success"
 
 after_failure:
-  - echo "*** after_failure"
+  - echo "*** $(date '+%Y-%m-%d %H:%M:%S') after_failure"
 
 before_deploy:
-  - echo "*** before_deploy"
+  - echo "*** $(date '+%Y-%m-%d %H:%M:%S') before_deploy"
   - cp build/index.html build/bin/index.html
+  - pushd build/bin/statusgo-ios-9.3-framework \
+      && zip -ry ../Statusgo-framework.zip Statusgo.framework \
+      && popd \
+      && rm -rf build/bin/statusgo-ios-9.3-framework \
+      && zipinfo build/bin/Statusgo-framework.zip
+  - pushd build/bin/statusgo-ios-9.3-framework-simulator \
+      && zip -ry ../Statusgo-framework-simulator.zip Statusgo.framework \
+      && popd \
+      && rm -rf build/bin/statusgo-ios-9.3-framework-simulator \
+      && zipinfo build/bin/Statusgo-framework-simulator.zip
+  - rm -f build/bin/xgo
 
 deploy:
   provider: pages
@@ -56,7 +67,7 @@ deploy:
   target_branch: gh-pages
 
 after_deploy:
-  - echo "*** after_deploy"
+  - echo "*** $(date '+%Y-%m-%d %H:%M:%S') after_deploy"
 
 after_script:
-  - echo "*** after_script"
+  - echo "*** $(date '+%Y-%m-%d %H:%M:%S') after_script"
