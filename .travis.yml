@@ -10,9 +10,15 @@ services:
 
 dist: trusty
 
-cache:
-  directories:
-  - .ethereumtest
+notifications:
+  slack:
+    rooms:
+      - secure: LppI+UB3X1MTd383mc4vRcXPgUKQDiGQb261ODBpEphHF5odH+oL8Eq4cEzuGGoRlDgcXlfzrBl3QdyEU3UOh83DMWV07NUyZErNHMiiiYTyP4mF8YG9pD/rHYAVBoL1GYoV+R85ABuuNaEvehb1eczNvETT01Y++SbL6lc4HOCRLDj+KW/Cq0M/O4D9xrm71teQIuRWMxIuphY+Y7M2SOq+QoFle7LF5Q4Bo1K8KzjeZtTiONdK1I6RV54DNZDgK37rvrnWJD24pp+6XJBp2GwRqpam85219UUzw34y1EBSiBWUolegYjM8rcoLJhu34/MI1cTnygRZ1aYhhFTjAHYn0Ncw80wCpG8kyvlEQkVappIIXK7n3Yfy4SXmNsLAXMfDVUjdzb4ms/7gBUda2ymnDsmb7pMrU+r2LBoIc0qMQoxhwo4zz4A1WXYezG445vpRqVj69R9GT/q8NuAB/jvFlgfwyq8jtBrxXmXswXjeIZPLeVJ+ktqzhJilFpucYepjVStHVVUq16mnEZwmwVRAe5J6AWDZviajYXeqLhDZDvu2+clie2/s+oH0kw8X58oSvNtRrpDjsrhk4Q27SJ7+df35KyNBwNcxi3XPSsHOmCskE/EfJjKqSboPQzICg/j93YP13IepjI39VlFr/1renxpENFo9G+2tLJxsqao=
+    on_pull_requests: true
+    on_success: change
+    on_failure: always
+
+# The remainder of this file are the steps of the hardcoded Travis sequence in the order they are executed.
 
 before_install:
   - echo "*** $(date '+%Y-%m-%d %H:%M:%S') before_install"
@@ -25,6 +31,7 @@ before_script:
   - echo "*** $(date '+%Y-%m-%d %H:%M:%S') before_script"
 
 script:
+  - echo "*** $(date '+%Y-%m-%d %H:%M:%S') script"
   - make statusgo-android
   - make statusgo-ios-simulator && mv build/bin/statusgo-ios-9.3-framework build/bin/statusgo-ios-9.3-framework-simulator
   - make statusgo-ios
@@ -32,6 +39,10 @@ script:
 
 before_cache:
   - echo "*** $(date '+%Y-%m-%d %H:%M:%S') before_cache"
+
+cache:
+  directories:
+  - .ethereumtest
 
 after_success:
   - echo "*** $(date '+%Y-%m-%d %H:%M:%S') after_success"
@@ -58,7 +69,6 @@ deploy:
     branch:
       - master
       - develop
-      - initial-fork
   local_dir: build/bin
   target_branch: gh-pages
 
@@ -67,11 +77,3 @@ after_deploy:
 
 after_script:
   - echo "*** $(date '+%Y-%m-%d %H:%M:%S') after_script"
-
-notifications:
-  slack:
-    rooms:
-      - secure: LppI+UB3X1MTd383mc4vRcXPgUKQDiGQb261ODBpEphHF5odH+oL8Eq4cEzuGGoRlDgcXlfzrBl3QdyEU3UOh83DMWV07NUyZErNHMiiiYTyP4mF8YG9pD/rHYAVBoL1GYoV+R85ABuuNaEvehb1eczNvETT01Y++SbL6lc4HOCRLDj+KW/Cq0M/O4D9xrm71teQIuRWMxIuphY+Y7M2SOq+QoFle7LF5Q4Bo1K8KzjeZtTiONdK1I6RV54DNZDgK37rvrnWJD24pp+6XJBp2GwRqpam85219UUzw34y1EBSiBWUolegYjM8rcoLJhu34/MI1cTnygRZ1aYhhFTjAHYn0Ncw80wCpG8kyvlEQkVappIIXK7n3Yfy4SXmNsLAXMfDVUjdzb4ms/7gBUda2ymnDsmb7pMrU+r2LBoIc0qMQoxhwo4zz4A1WXYezG445vpRqVj69R9GT/q8NuAB/jvFlgfwyq8jtBrxXmXswXjeIZPLeVJ+ktqzhJilFpucYepjVStHVVUq16mnEZwmwVRAe5J6AWDZviajYXeqLhDZDvu2+clie2/s+oH0kw8X58oSvNtRrpDjsrhk4Q27SJ7+df35KyNBwNcxi3XPSsHOmCskE/EfJjKqSboPQzICg/j93YP13IepjI39VlFr/1renxpENFo9G+2tLJxsqao=
-    on_pull_requests: true
-    on_success: always
-    on_failure: always

@@ -1,6 +1,6 @@
-#### ADC Notes
+### ADC Notes
 
-##### TODO
+#### TODO
 
 -   [x] When building the project, a number of Go references  point to their own repository.
         These should point to our forked repo.
@@ -17,18 +17,23 @@
         Docker images, ...) or at least make sure we reference something that's guaranteed
         to be persisting (Docker images with tag?).
 -   [ ] Understand what the different OS builds need and make sure it's deployed to the Github pages.
--   [ ] Remove this before merge: [![Initial-Fork Build Status](https://img.shields.io/travis/AlgebraixData/status-go/initial-fork.svg?label=build/initial-fork)](https://travis-ci.org/AlgebraixData/status-go/tree/initial-fork)
--   [ ] Update Slack notification settings after test (`on_success: change`).
+-   [x] Update Slack notification settings after test (`on_success: change`).
 
-##### Observations
+#### Observations
 
 *   [Dockerfile](Dockerfile): 
     *   References the branch `feature/statusd-replaces-geth-on-cluster` in the fork 
         [farazdagi/status-go](https://github.com/farazdagi/status-go). The branch doesn't seem to exist.
 *   [Makefile](Makefile): 
-    *   Uses the docker image [farazdagi/xgo](https://hub.docker.com/r/farazdagi/xgo/) for most build goals.
-    *   Seems to have only partial dependency management implemented. Looks like it's mostly a collection of script
-        snippets (goals) with dependency management between them.
+    *   Uses the docker image [farazdagi/xgo](https://hub.docker.com/r/farazdagi/xgo/) (or a derivation of it)
+        for the builds. It is based `xgo-1.7.1` (a cross-compiler for Go) and adds `build.sh` as custom build
+        script. This script sets up rather complex build environments and performs the actual build. The iOS
+        simulator build is done with another docker image that is derived by what appears to be replacing of
+        the iOS 9.3 SDK with the iPhoneSimulator 9.3 SDK. (The code for these docker images is in the directory
+        "xgo".)
+    *   Because the builds are run in docker images, typical `make` dependency management doesn't work; all
+        builds are full builds, starting from scratch. (`make` dependencies are used to create dependencies
+        between the different `make` targets.)
     *   `make statusgo-android`:
         *   Make result is the file `build/bin/statusgo-android-16.aar`.
     *   `make statusgo-ios`:
@@ -38,4 +43,7 @@
             ldid.cpp(602): _assert(): Swap(mach_header_->filetype) == MH_EXECUTE || Swap(mach_header_->filetype) == MH_DYLIB || Swap(mach_header_->filetype) == MH_BUNDLE
             ```
             This doesn't seem to prevent the build from succeeding.
+    *   `make statusgo-ios-simulator`:
+        *   Result looks similar to `make statusgo-ios`, but build process is different.
+            Specifically, it uses a different `xgo` docker image.
 
