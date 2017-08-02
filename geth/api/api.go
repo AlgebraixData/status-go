@@ -3,8 +3,8 @@ package api
 import (
 	"github.com/ethereum/go-ethereum/accounts/keystore"
 	gethcommon "github.com/ethereum/go-ethereum/common"
-	"github.com/status-im/status-go/geth/common"
-	"github.com/status-im/status-go/geth/params"
+	"github.com/AlgebraixData/status-go/geth/common"
+	"github.com/AlgebraixData/status-go/geth/params"
 )
 
 // StatusAPI provides API to access Status related functionality.

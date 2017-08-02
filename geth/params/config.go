@@ -14,7 +14,7 @@ import (
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/log"
-	"github.com/status-im/status-go/static"
+	"github.com/AlgebraixData/status-go/static"
 )
 
 // default node configuration options

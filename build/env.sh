@@ -21,12 +21,12 @@ if [ ! -d "$WS1/src" ]; then
 fi
 
 # expose project itself
-PROJECTDIR="$WS2/src/github.com/status-im"
+PROJECTDIR="$WS2/src/github.com/AlgebraixData"
 if [ ! -L "$PROJECTDIR/status-go" ]; then
     mkdir -p "$PROJECTDIR"
     cd "$PROJECTDIR"
     ln -s "$ROOT" status-go
-    cd "$root"
+    cd "$ROOT"
 fi
 
 # Set up the environment to use the workspace.

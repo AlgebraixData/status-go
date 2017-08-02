@@ -9,11 +9,11 @@ import (
 	"time"
 
 	"github.com/robertkrimen/otto"
-	"github.com/status-im/status-go/geth/jail"
-	"github.com/status-im/status-go/geth/node"
-	"github.com/status-im/status-go/geth/params"
-	. "github.com/status-im/status-go/geth/testing"
-	"github.com/status-im/status-go/static"
+	"github.com/AlgebraixData/status-go/geth/jail"
+	"github.com/AlgebraixData/status-go/geth/node"
+	"github.com/AlgebraixData/status-go/geth/params"
+	. "github.com/AlgebraixData/status-go/geth/testing"
+	"github.com/AlgebraixData/status-go/static"
 	"github.com/stretchr/testify/suite"
 )
 

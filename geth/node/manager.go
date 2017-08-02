@@ -15,7 +15,7 @@ import (
 	"github.com/ethereum/go-ethereum/p2p/discover"
 	"github.com/ethereum/go-ethereum/rpc"
 	whisper "github.com/ethereum/go-ethereum/whisper/whisperv5"
-	"github.com/status-im/status-go/geth/params"
+	"github.com/AlgebraixData/status-go/geth/params"
 )
 
 // errors

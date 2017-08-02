@@ -2,7 +2,7 @@ package jail
 
 import (
 	"github.com/robertkrimen/otto"
-	"github.com/status-im/status-go/geth/node"
+	"github.com/AlgebraixData/status-go/geth/node"
 )
 
 const (

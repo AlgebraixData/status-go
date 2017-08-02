@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/status-im/status-go/geth/common"
-	"github.com/status-im/status-go/geth/params"
+	"github.com/AlgebraixData/status-go/geth/common"
+	"github.com/AlgebraixData/status-go/geth/params"
 )
 
 //export GenerateConfig

@@ -44,3 +44,7 @@ profile.cov
 coverage.out
 coverage-all.out
 coverage.html
+
+# Dev environments
+.idea/
+.DS_Store

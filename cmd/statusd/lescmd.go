@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/status-im/status-go/geth/params"
+	"github.com/AlgebraixData/status-go/geth/params"
 	"gopkg.in/urfave/cli.v1"
 )
 

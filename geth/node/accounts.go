@@ -12,8 +12,8 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/keystore"
 	gethcommon "github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/status-im/status-go/extkeys"
-	"github.com/status-im/status-go/geth/common"
+	"github.com/AlgebraixData/status-go/extkeys"
+	"github.com/AlgebraixData/status-go/geth/common"
 )
 
 // errors
