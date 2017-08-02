@@ -16,6 +16,9 @@
 -   [ ] Find all references of `farazdagi` and copy the referenced objects (S3 files, gists,
         Docker images, ...) or at least make sure we reference something that's guaranteed
         to be persisting (Docker images with tag?).
+-   [ ] Understand what the different OS builds need and make sure it's deployed to the Github pages.
+-   [ ] Remove this before merge: [![Initial-Fork Build Status](https://img.shields.io/travis/AlgebraixData/status-go/initial-fork.svg?label=build/initial-fork)](https://travis-ci.org/AlgebraixData/status-go/tree/initial-fork)
+-   [ ] Update Slack notification settings after test (`on_success: change`).
 
 ##### Observations
 

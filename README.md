@@ -1,7 +1,9 @@
 #### Repository forked from [status-im/status-go](https://github.com/status-im/status-go)
 
-[![Initial-Fork Build Status](https://img.shields.io/travis/AlgebraixData/status-go/initial-fork.svg?label=build/initial-fork)](https://travis-ci.org/AlgebraixData/status-go/tree/initial-fork)
-**TODO**: Remove before merge
+See (and maintain) our [notes](Notes.md).
+
+Build results are accessible through the
+[AlgebraixData/status-im Fork Github page](https://algebraixdata.github.io/status-go/).
 
 [![Master Build Status](https://img.shields.io/travis/AlgebraixData/status-go/master.svg?label=build/master)](https://github.com/AlgebraixData/status-go/tree/master)
 [![Develop Build Status](https://img.shields.io/travis/AlgebraixData/status-go/develop.svg?label=build/develop)](https://github.com/AlgebraixData/status-go/tree/develop)
