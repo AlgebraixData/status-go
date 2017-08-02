@@ -2,9 +2,15 @@
 
 #### TODO
 
--   [x] When building the project, a number of Go references  point to their own repository.
-        These should point to our forked repo.
--   [ ] Review all dependencies and decide which ones we may want to copy/fork.
+-   [x] When building the project, a number of Go references  point to their own repository.  
+        **Conclusion**: These now point to our forked repo.
+-   [x] Review all dependencies and decide which ones we may want to copy/fork.  
+        **Conclusion**: All 3rd-party Go package references seem to be committed to the "vendor" directory.
+        It is not fully clear whether the build uses the online versions or the committed versions,
+        but it seems that it does use the committed versions. To make sure we'd have to analyze the
+        `xgo` build configurations. See also my 
+        [Slack post](https://algebraixdata.slack.com/files/gerhard/F6HBHNDGA/Go_dependencies_in_status-go)
+        with the dependencies.
 -   [ ] A number of external dependencies are committed to to the `status-go` repository.
         However, the Go files in those dependencies often import the original location. (For
         example, a number of `btcsuite` projects are committed in
@@ -15,9 +21,40 @@
         Github. If this is correct, cleaning this up would be a significant amount of work.
 -   [ ] Find all references of `farazdagi` and copy the referenced objects (S3 files, gists,
         Docker images, ...) or at least make sure we reference something that's guaranteed
-        to be persisting (Docker images with tag?).
+        to be persisting (Docker images with tag?).  
+        **Note**: With the proposed changes below, we now have several places that we need to check for upstream 
+        updates when we update the repository.
+
+    -   [ ] The [Dockerfile](Dockerfile) creates an image with a `statusd` executable. It uses the branch
+            "feature/statusd-replaces-geth-on-cluster" of a [fork of status-go](https://github.com/farazdagi/status-go).
+            This branch doesn't exist in this fork (and neither in the original). It seems there isn't much we can do at 
+            this point; the Dockerfile doesn't seem to work as-is. We can clone the `farazdagi/status-go` repository, 
+            but it wouldn't help us to get this going.  
+            **Tentative conclusion**: Do nothing. 
+    -   [ ] The build uses two Docker images: [farazdagi/xgo](https://hub.docker.com/r/farazdagi/xgo/) and 
+            [farazdagi/xgo-ios-simulator](https://hub.docker.com/r/farazdagi/xgo-ios-simulator/).  
+            **Tentative conclusion**: We probably can submit these images as they are to the Docker hub with our own 
+            path/tag and then reference these images.
+    -   [ ] The iOS simulator build uses a copy of the iPhone simulator SDK that they have made available through a 
+            [public S3 location](https://s3.amazonaws.com/farazdagi/status-im/iPhoneSimulator9.3.sdk.tar.gz). I'm not
+            sure this is legal. This is probably something that we can get when we need it -- if we should need it.  
+            **Tentative conclusion**: Do nothing. When/if we need to do something here, we probably shouldn't make the  
+            SDK publicly available without checking the license first.
+    -   [ ] Several mentions in the [package.json](package.json) file. This file seems to be an `npm` package 
+            specification and looks like a left-over from some time ago. It also references the 
+            [farazdagi/status-go](https://github.com/farazdagi/status-go) repository even though it is in the 
+            [status-im/status-go](https://github.com/status-im/status-go) repository. To me it seems this file is not
+            used anymore and the references in it can be ignored.  
+            **Tentative conclusion**: Do nothing.
+    -   [ ] The code uses two `CHTRootConfigURL`s in the form of gists
+            ([farazdagi/a8d36e2818b3b2b6074d691da63a0c36](https://gist.githubusercontent.com/farazdagi/a8d36e2818b3b2b6074d691da63a0c36/raw/)
+            and [farazdagi/3d05d1d3bfa36db7b650c955e23fd7ae](https://gist.githubusercontent.com/farazdagi/3d05d1d3bfa36db7b650c955e23fd7ae/raw/)).
+            These are marked with "TODO remove this hack, once CHT sync is implemented on LES side".  
+            **Tentative conclusion**: Clone the gists and reference our gists.
+        
 -   [ ] Understand what the different OS builds need and make sure it's deployed to the Github pages.
--   [x] Update Slack notification settings after test (`on_success: change`).
+-   [ ] Re-enable the test and analyze the failures. (Consider that the original repository also has failures.)
+
 
 #### Observations
 
