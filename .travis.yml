@@ -32,11 +32,18 @@ before_script:
 
 script:
   - echo "*** $(date '+%Y-%m-%d %H:%M:%S') script"
-  - make ci
-# TODO Temporarily moved to before_deploy to make CI turnaround faster.
+# TODOG Replaced with explicit commands (to always run them all).
+#  - make ci
+# TODOG Temporarily moved to before_deploy to make CI turnaround faster.
 #  - make statusgo-android
 #  - make statusgo-ios-simulator && mv build/bin/statusgo-ios-9.3-framework build/bin/statusgo-ios-9.3-framework-simulator
 #  - make statusgo-ios
+  - build/env.sh go test -timeout 40m -v -cpu 1 -p 1 -parallel 1 ./geth/common
+  - build/env.sh go test -timeout 40m -v -cpu 1 -p 1 -parallel 1 ./geth/node
+  - build/env.sh go test -timeout 40m -v -cpu 1 -p 1 -parallel 1 ./geth/params
+  - build/env.sh go test -timeout 40m -v -cpu 1 -p 1 -parallel 1 ./extkeys
+  - build/env.sh go test -timeout 40m -v -cpu 1 -p 1 -parallel 1 ./geth/jail
+  - build/env.sh go test -timeout 40m -v -cpu 1 -p 1 -parallel 1 ./geth/api
 
 before_cache:
   - echo "*** $(date '+%Y-%m-%d %H:%M:%S') before_cache"
@@ -53,11 +60,11 @@ after_failure:
 
 before_deploy:
   - echo "*** $(date '+%Y-%m-%d %H:%M:%S') before_deploy"
-  # TODO These are temporarily moved to here from script ...
+  # TODOG These are temporarily moved to here from script ...
   - make statusgo-android
   - make statusgo-ios-simulator && mv build/bin/statusgo-ios-9.3-framework build/bin/statusgo-ios-9.3-framework-simulator
   - make statusgo-ios
-  # TODO ... normal before_deploy.
+  # TODOG ... normal before_deploy.
   - cp build/index.html build/bin/index.html
   - pushd build/bin/statusgo-ios-9.3-framework && zip -ry ../Statusgo-framework.zip Statusgo.framework && popd
   - rm -rf build/bin/statusgo-ios-9.3-framework
