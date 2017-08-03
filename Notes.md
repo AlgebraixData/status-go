@@ -1,5 +1,36 @@
 ### ADC Notes
 
+#### Observations
+
+-   [Dockerfile](Dockerfile): 
+    -   References the branch `feature/statusd-replaces-geth-on-cluster` in the fork 
+        [farazdagi/status-go](https://github.com/farazdagi/status-go). The branch doesn't seem to 
+        exist.
+-   [Makefile](Makefile): 
+    -   Uses the docker image [algebraixendurance/status-xgo](https://hub.docker.com/r/algebraixendurance/status-xgo/)
+        for the normal builds. It is based on `xgo-1.7.1` (a cross-compiler for Go) and adds 
+        `build.sh` as custom build script. This script sets up rather complex build environments and 
+        performs the actual build. The iOS simulator build is done with another docker image
+        [algebraixendurance/status-xgo-ios-simulator](https://hub.docker.com/r/algebraixendurance/status-xgo-ios-simulator/)
+        that is derived by what appears to be replacing of the iOS 9.3 SDK with the iPhoneSimulator 
+        9.3 SDK in the normal build image. (The code for these docker images is in the directory 
+        "xgo".)
+    -   Because the builds are run in docker images, typical `make` dependency management doesn't 
+        work; all builds are full builds, starting from scratch. (`make` dependencies are used to 
+        create dependencies between the different `make` targets.)
+    -   `make statusgo-android`:
+        -   Make result is the file `build/bin/statusgo-android-16.aar`.
+    -   `make statusgo-ios`:
+        -   Make result is the directory `build/bin/statusgo-ios-9.3-framework`.
+        -   The console output contains a number of what appear to be asserts like this:
+            ```
+            ldid.cpp(602): _assert(): Swap(mach_header_->filetype) == MH_EXECUTE || Swap(mach_header_->filetype) == MH_DYLIB || Swap(mach_header_->filetype) == MH_BUNDLE
+            ```
+            This doesn't seem to prevent the build from succeeding.
+    -   `make statusgo-ios-simulator`:
+        -   Result looks similar to `make statusgo-ios`, but build process is different.
+            Specifically, it uses a different `xgo` docker image.
+
 #### TODO
 
 -   (Done) When building the project, a number of Go references  point to their own repository.  
@@ -40,15 +71,6 @@
         -   golang.org/x/text/unicode/norm
     -   http://gopkg.in/urfave/cli.v1 -> https://github.com/urfave/cli
         -   gopkg.in/urfave/cli.v1
-
--   A number of external dependencies are committed to to the `status-go` repository.
-    However, the Go files in those dependencies often import the original location. (For
-    example, a number of `btcsuite` projects are committed in
-    status-go/vendor/github.com/btcsuite, but btcsuite/btcd/chaincfg/chainhash/hashfuncs.go
-    contains `import "github.com/btcsuite/fastsha256"`.) I don't know for sure whether this
-    `import` statement references the file as indicated by the URL path or the one that's
-    committed to the repository. It looks to me as if it referenced the original file on
-    Github. If this is correct, cleaning this up would be a significant amount of work.
 
 -   (Done) Find all references of `farazdagi` and copy the referenced objects (S3 files, gists,
     Docker images, ...) or at least make sure we reference something that's guaranteed
@@ -96,38 +118,20 @@
         
 -   Understand what the different OS builds need and make sure it's deployed to the Github pages.
     Ben is working on this.
--   Re-enable the test and analyze the failures. (Consider that the original repository also has failures.)
--   Create an organization on Docker hub (rather than continue to use Endurance's personal account), move
-    the two Docker images that are used in the build to the organization and set up the integration with Github
-    to automatically build them.
 
+-   Re-enable the test and analyze the failures. (Consider that the original repository also has 
+    failures.)
 
-#### Observations
+-   Create an organization on Docker hub (rather than continue to use Endurance's personal account), 
+    move the two Docker images that are used in the build to the organization and set up the 
+    integration with Github to automatically build them. Or decide what else we want to do with 
+    our public Docker images.
 
--   [Dockerfile](Dockerfile): 
-    -   References the branch `feature/statusd-replaces-geth-on-cluster` in the fork 
-        [farazdagi/status-go](https://github.com/farazdagi/status-go). The branch doesn't seem to exist.
--   [Makefile](Makefile): 
-    -   Uses the docker image [algebraixendurance/status-xgo](https://hub.docker.com/r/algebraixendurance/status-xgo/)
-        for the normal builds. It is based `xgo-1.7.1` (a cross-compiler for Go) and adds `build.sh` as custom
-        build script. This script sets up rather complex build environments and performs the actual build. The iOS
-        simulator build is done with another docker image
-        [algebraixendurance/status-xgo-ios-simulator](https://hub.docker.com/r/algebraixendurance/status-xgo-ios-simulator/)
-        that is derived by what appears to be replacing of the iOS 9.3 SDK with the iPhoneSimulator 9.3 SDK.
-        (The code for these docker images is in the directory "xgo".)
-    -   Because the builds are run in docker images, typical `make` dependency management doesn't work; all
-        builds are full builds, starting from scratch. (`make` dependencies are used to create dependencies
-        between the different `make` targets.)
-    -   `make statusgo-android`:
-        -   Make result is the file `build/bin/statusgo-android-16.aar`.
-    -   `make statusgo-ios`:
-        -   Make result is the directory `build/bin/statusgo-ios-9.3-framework`.
-        -   The console output contains a number of what appear to be asserts like this:
-            ```
-            ldid.cpp(602): _assert(): Swap(mach_header_->filetype) == MH_EXECUTE || Swap(mach_header_->filetype) == MH_DYLIB || Swap(mach_header_->filetype) == MH_BUNDLE
-            ```
-            This doesn't seem to prevent the build from succeeding.
-    -   `make statusgo-ios-simulator`:
-        -   Result looks similar to `make statusgo-ios`, but build process is different.
-            Specifically, it uses a different `xgo` docker image.
-
+-   A number of external dependencies are committed to to the `status-go` repository.
+    However, the Go files in those dependencies often import the original location. (For
+    example, a number of `btcsuite` projects are committed in
+    status-go/vendor/github.com/btcsuite, but btcsuite/btcd/chaincfg/chainhash/hashfuncs.go
+    contains `import "github.com/btcsuite/fastsha256"`.) I don't know for sure whether this
+    `import` statement references the file as indicated by the URL path or the one that's
+    committed to the repository. It looks to me as if it referenced the original file on
+    Github. If this is correct, cleaning this up would be a significant amount of work.
