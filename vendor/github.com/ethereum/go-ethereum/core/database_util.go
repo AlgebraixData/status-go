@@ -24,6 +24,7 @@ import (
 	"fmt"
 	"math/big"
 	"sync"
+	"runtime/debug" // TODOG
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
@@ -311,6 +312,7 @@ func WriteCanonicalHash(db ethdb.Database, hash common.Hash, number uint64) erro
 func WriteHeadHeaderHash(db ethdb.Database, hash common.Hash) error {
 	if err := db.Put(headHeaderKey, hash.Bytes()); err != nil {
 		log.Crit("Failed to store last header's hash", "err", err)
+		debug.PrintStack() // TODOG
 	}
 	return nil
 }
