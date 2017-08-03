@@ -33,9 +33,10 @@ before_script:
 script:
   - echo "*** $(date '+%Y-%m-%d %H:%M:%S') script"
   - make ci
-  - make statusgo-android
-  - make statusgo-ios-simulator && mv build/bin/statusgo-ios-9.3-framework build/bin/statusgo-ios-9.3-framework-simulator
-  - make statusgo-ios
+# TODO Temporarily moved to before_deploy to make CI turnaround faster.
+#  - make statusgo-android
+#  - make statusgo-ios-simulator && mv build/bin/statusgo-ios-9.3-framework build/bin/statusgo-ios-9.3-framework-simulator
+#  - make statusgo-ios
 
 before_cache:
   - echo "*** $(date '+%Y-%m-%d %H:%M:%S') before_cache"
@@ -52,6 +53,11 @@ after_failure:
 
 before_deploy:
   - echo "*** $(date '+%Y-%m-%d %H:%M:%S') before_deploy"
+  # TODO These are temporarily moved to here from script ...
+  - make statusgo-android
+  - make statusgo-ios-simulator && mv build/bin/statusgo-ios-9.3-framework build/bin/statusgo-ios-9.3-framework-simulator
+  - make statusgo-ios
+  # TODO ... normal before_deploy.
   - cp build/index.html build/bin/index.html
   - pushd build/bin/statusgo-ios-9.3-framework && zip -ry ../Statusgo-framework.zip Statusgo.framework && popd
   - rm -rf build/bin/statusgo-ios-9.3-framework
