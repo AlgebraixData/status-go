@@ -9,7 +9,6 @@
         **Conclusion**: All 3rd-party Go package references are committed to the "vendor" directory.
         The only other dependencies I have found are related to the user "farazdagi" and described
         below.
-
         About the **Go dependencies**: It is not fully clear whether the build uses the online
         versions or the committed versions, but it seems that it does use the committed versions (the
         build output indicates so much). OTOH, Go's dependency listing prints out the package names as
@@ -18,7 +17,6 @@
         next item.) In any case, I think we can leave this as-is; we definitely have the packages
         committed, and even if the current build uses online sources, we can make it work with the
         committed ones if needed.
-
         3rd party package dependencies:
         -   https://github.com/btcsuite
             -   github.com/btcsuite/btcd/btcec
