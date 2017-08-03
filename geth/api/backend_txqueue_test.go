@@ -377,9 +377,9 @@ func (s *BackendTestSuite) TestCompleteMultipleQueuedTransactions() {
 			Value: (*hexutil.Big)(big.NewInt(1000000000000)),
 		})
 		s.NoError(err, "cannot send transaction")
-		if err != nil { // TODOG
-			debug.PrintStack()
-		}
+		//if err != nil { // TODOG
+		//	debug.PrintStack()
+		//}
 		s.False(reflect.DeepEqual(txHashCheck, gethcommon.Hash{}), "transaction returned empty hash")
 	}
 

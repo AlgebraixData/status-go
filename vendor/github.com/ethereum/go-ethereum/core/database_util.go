@@ -311,8 +311,9 @@ func WriteCanonicalHash(db ethdb.Database, hash common.Hash, number uint64) erro
 // WriteHeadHeaderHash stores the head header's hash.
 func WriteHeadHeaderHash(db ethdb.Database, hash common.Hash) error {
 	if err := db.Put(headHeaderKey, hash.Bytes()); err != nil {
-		log.Crit("Failed to store last header's hash", "err", err)
+		log.Warn("Failed to store last header's hash", "err", err) // TODOG
 		debug.PrintStack() // TODOG
+		log.Crit("Failed to store last header's hash", "err", err)
 	}
 	return nil
 }
