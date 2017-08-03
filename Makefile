@@ -57,12 +57,13 @@ statusgo-ios-simulator-mainnet: xgo
 	@echo "iOS framework cross compilation done (mainnet)."
 
 ci:
-	build/env.sh go test -timeout 40m -v ./geth/api
-	build/env.sh go test -timeout 40m -v ./geth/common
-	build/env.sh go test -timeout 40m -v ./geth/jail
-	build/env.sh go test -timeout 40m -v ./geth/node
-	build/env.sh go test -timeout 40m -v ./geth/params
-	build/env.sh go test -timeout 40m -v ./extkeys
+	# TODOG Add ""-p 1 -parallel 1". Move api to the end (to see the others run).
+	build/env.sh go test -timeout 40m -v -p 1 -parallel 1 ./geth/common
+	build/env.sh go test -timeout 40m -v -p 1 -parallel 1 ./geth/jail
+	build/env.sh go test -timeout 40m -v -p 1 -parallel 1 ./geth/node
+	build/env.sh go test -timeout 40m -v -p 1 -parallel 1 ./geth/params
+	build/env.sh go test -timeout 40m -v -p 1 -parallel 1 ./extkeys
+	build/env.sh go test -timeout 40m -v -p 1 -parallel 1 ./geth/api
 
 generate:
 	cp ./node_modules/web3/dist/web3.js ./static/scripts/web3.js
