@@ -59,10 +59,10 @@ statusgo-ios-simulator-mainnet: xgo
 ci:
 	# TODOG Add ""-p 1 -parallel 1". Move api to the end (to see the others run).
 	build/env.sh go test -timeout 40m -v -p 1 -parallel 1 ./geth/common
-	build/env.sh go test -timeout 40m -v -p 1 -parallel 1 ./geth/jail
 	build/env.sh go test -timeout 40m -v -p 1 -parallel 1 ./geth/node
 	build/env.sh go test -timeout 40m -v -p 1 -parallel 1 ./geth/params
 	build/env.sh go test -timeout 40m -v -p 1 -parallel 1 ./extkeys
+	build/env.sh go test -timeout 40m -v -p 1 -parallel 1 ./geth/jail
 	build/env.sh go test -timeout 40m -v -p 1 -parallel 1 ./geth/api
 
 generate:
