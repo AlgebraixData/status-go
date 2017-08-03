@@ -49,7 +49,7 @@
         committed to the repository. It looks to me as if it referenced the original file on
         Github. If this is correct, cleaning this up would be a significant amount of work.
 
--   [ ] Find all references of `farazdagi` and copy the referenced objects (S3 files, gists,
+-   [x] Find all references of `farazdagi` and copy the referenced objects (S3 files, gists,
         Docker images, ...) or at least make sure we reference something that's guaranteed
         to be persisting (Docker images with tag?).  
         **Note**: With the proposed changes below, we now have several places that we need to
@@ -69,27 +69,34 @@
             [algebraixendurance/status-xgo](https://hub.docker.com/r/algebraixendurance/status-xgo/)
             and
             [algebraixendurance/status-xgo-ios-simulator](https://hub.docker.com/r/algebraixendurance/status-xgo-ios-simulator/).
-    -   [ ] The iOS simulator build uses a copy of the iPhone simulator SDK that they have made available through a 
+    -   [x] The iOS simulator build uses a copy of the iPhone simulator SDK that they have made available through a
             [public S3 location](https://s3.amazonaws.com/farazdagi/status-im/iPhoneSimulator9.3.sdk.tar.gz). I'm not
-            sure this is legal. This is probably something that we can get when we need it -- if we should need it.  
-            **Conclusion**: Do nothing. When/if we need to do something here, we probably shouldn't make the
-            SDK publicly available without checking the license first.
-    -   [ ] Several mentions in the [package.json](package.json) file. This file seems to be an `npm` package 
+            sure this it is legal to publish a copy of the SDK. This is something that we can address if we should have to.
+            **Conclusion**: Do nothing, but keep a private copy of the SDK at
+            [s3://alice-status/iPhoneSimulator9.3.sdk.tar.gz](https://s3.amazonaws.com/alice-status/iPhoneSimulator9.3.sdk.tar.gz).
+            When/if we need to do something here, we probably shouldn't make the SDK publicly available
+            without checking the license first.
+    -   [x] Several mentions in the [package.json](package.json) file. This file seems to be an `npm` package
             specification and looks like a left-over from some time ago. It also references the 
             [farazdagi/status-go](https://github.com/farazdagi/status-go) repository even though it is in the 
             [status-im/status-go](https://github.com/status-im/status-go) repository. To me it seems this file is not
             used anymore and the references in it can be ignored.  
-            **Tentative conclusion**: Do nothing.
-    -   [ ] The code uses two `CHTRootConfigURL`s in the form of gists
-            ([farazdagi/a8d36e2818b3b2b6074d691da63a0c36](https://gist.githubusercontent.com/farazdagi/a8d36e2818b3b2b6074d691da63a0c36/raw/)
-            and [farazdagi/3d05d1d3bfa36db7b650c955e23fd7ae](https://gist.githubusercontent.com/farazdagi/3d05d1d3bfa36db7b650c955e23fd7ae/raw/)).
+            **Conclusion**: Do nothing.
+    -   [x] The code uses two `CHTRootConfigURL`s in the form of gists
+            (`cht.json`
+            [farazdagi/a8d36e2818b3b2b6074d691da63a0c36](https://gist.githubusercontent.com/farazdagi/a8d36e2818b3b2b6074d691da63a0c36)
+            and `cht-sandbox.json`
+            [farazdagi/3d05d1d3bfa36db7b650c955e23fd7ae](https://gist.githubusercontent.com/farazdagi/3d05d1d3bfa36db7b650c955e23fd7ae)).
             These are marked with "TODO remove this hack, once CHT sync is implemented on LES side".  
-            **Tentative conclusion**: Clone the gists and reference our gists.
+            **Conclusion**: Fork the gists and reference our gists. Replacements:
+            -   `cht.json`: [GFiedler-ADC/082d351623c7cf80d9b31eebed457087](https://gist.github.com/GFiedler-ADC/082d351623c7cf80d9b31eebed457087) replaces [farazdagi/a8d36e2818b3b2b6074d691da63a0c36](https://gist.githubusercontent.com/farazdagi/a8d36e2818b3b2b6074d691da63a0c36).
+            -   `cht-sandbox.json`: [GFiedler-ADC/ccd7b962775bded311d4ae500bfbc27a](https://gist.github.com/GFiedler-ADC/ccd7b962775bded311d4ae500bfbc27a) replaces [farazdagi/3d05d1d3bfa36db7b650c955e23fd7ae](https://gist.githubusercontent.com/farazdagi/3d05d1d3bfa36db7b650c955e23fd7ae).
         
 -   [ ] Understand what the different OS builds need and make sure it's deployed to the Github pages.
+        Ben is working on this.
 -   [ ] Re-enable the test and analyze the failures. (Consider that the original repository also has failures.)
 -   [ ] Create an organization on Docker hub (rather than continue to use Endurance's personal account), move
-        the two Docker images that are used in the build to the organization and set up an integration with Github
+        the two Docker images that are used in the build to the organization and set up the integration with Github
         to automatically build them.
 
 

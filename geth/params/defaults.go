@@ -57,7 +57,7 @@ const (
 
 	// CHTRootConfigURL defines URL to file containing hard-coded CHT roots
 	// TODO remove this hack, once CHT sync is implemented on LES side
-	CHTRootConfigURL = "https://gist.githubusercontent.com/farazdagi/a8d36e2818b3b2b6074d691da63a0c36/raw/"
+	CHTRootConfigURL = "https://gist.githubusercontent.com/GFiedler-ADC/082d351623c7cf80d9b31eebed457087/raw/"
 
 	// LogFile defines where to write logs to
 	LogFile = "geth.log"
