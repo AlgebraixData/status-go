@@ -2,6 +2,17 @@
 
 #### Observations
 
+-   Test accounts: The tests use several accounts (listed below). I know that at least one of them 
+    is used on the Ropsten network; I'm not sure whether other networks are used in the tests. These
+    accounts need to have sufficient funding. (At least the first one needs >= 100 Ropsten ETH.)
+    
+    The accounts are (see also 
+    [static/config/test-data.json](https://github.com/AlgebraixData/status-go/blob/develop/static/config/test-data.json)):
+    -   `0xadaf150b905cf5e6a778e553e15a139b6618bbb7`: See 
+        [static/keys/test-account1.pk](https://github.com/AlgebraixData/status-go/blob/develop/static/keys/test-account1.pk).
+    -   `0x65c01586aa0ce152835c788ace665e91ab3527b8`: See 
+        [static/keys/test-account2.pk](https://github.com/AlgebraixData/status-go/blob/develop/static/keys/test-account2.pk).
+    
 -   [Dockerfile](Dockerfile): 
     -   References the branch `feature/statusd-replaces-geth-on-cluster` in the fork 
         [farazdagi/status-go](https://github.com/farazdagi/status-go). The branch doesn't seem to 
@@ -116,16 +127,20 @@
         -   `cht.json`: [GFiedler-ADC/082d351623c7cf80d9b31eebed457087](https://gist.github.com/GFiedler-ADC/082d351623c7cf80d9b31eebed457087) replaces [farazdagi/a8d36e2818b3b2b6074d691da63a0c36](https://gist.githubusercontent.com/farazdagi/a8d36e2818b3b2b6074d691da63a0c36).
         -   `cht-sandbox.json`: [GFiedler-ADC/ccd7b962775bded311d4ae500bfbc27a](https://gist.github.com/GFiedler-ADC/ccd7b962775bded311d4ae500bfbc27a) replaces [farazdagi/3d05d1d3bfa36db7b650c955e23fd7ae](https://gist.githubusercontent.com/farazdagi/3d05d1d3bfa36db7b650c955e23fd7ae).
         
--   Understand what the different OS builds need and make sure it's deployed to the Github pages.
-    Ben is working on this.
+-   Understand what the different OS builds need and make sure it's deployed to the Github pages.  
+    **Ben is working on this.**
 
--   Re-enable the test and analyze the failures. (Consider that the original repository also has 
-    failures.)
+-   (Done) Re-enable the test and analyze the failures. (Consider that the original repository also 
+    has failures.)  
+    **Conclusion**: It seems the failures were due to low balance on the test accounts. Adding 
+    Ropsten ETH fixed this.
 
 -   Create an organization on Docker hub (rather than continue to use Endurance's personal account), 
     move the two Docker images that are used in the build to the organization and set up the 
     integration with Github to automatically build them. Or decide what else we want to do with 
     our public Docker images.
+    
+-   Possibly replace their test accounts (Ropsten only?) with our own accounts.
 
 -   A number of external dependencies are committed to to the `status-go` repository.
     However, the Go files in those dependencies often import the original location. (For

@@ -32,10 +32,10 @@ before_script:
 
 script:
   - echo "*** $(date '+%Y-%m-%d %H:%M:%S') script"
+  - make ci
   - make statusgo-android
   - make statusgo-ios-simulator && mv build/bin/statusgo-ios-9.3-framework build/bin/statusgo-ios-9.3-framework-simulator
   - make statusgo-ios
-  # - make ci # TODO Is broken in original repo, and apparently worse in our fork
 
 before_cache:
   - echo "*** $(date '+%Y-%m-%d %H:%M:%S') before_cache"
