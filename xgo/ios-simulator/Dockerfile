@@ -1,4 +1,4 @@
-FROM farazdagi/xgo
+FROM algebraixendurance/status-xgo
 
 RUN \
   IOS_SDK_PATH=https://s3.amazonaws.com/farazdagi/status-im/iPhoneSimulator9.3.sdk.tar.gz && \

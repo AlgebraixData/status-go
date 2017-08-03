@@ -14,27 +14,27 @@ statusgo-cross: statusgo-android statusgo-ios
 
 statusgo-android: xgo
 	date "+%Y-%m-%d %H:%M:%S"
-	build/env.sh $(GOBIN)/xgo --image farazdagi/xgo --go=$(GO) -out statusgo --dest=$(GOBIN) --targets=android-16/aar -v $(shell build/testnet-flags.sh) ./cmd/statusd
+	build/env.sh $(GOBIN)/xgo --image algebraixendurance/status-xgo --go=$(GO) -out statusgo --dest=$(GOBIN) --targets=android-16/aar -v $(shell build/testnet-flags.sh) ./cmd/statusd
 	date "+%Y-%m-%d %H:%M:%S"
 	@echo "Android cross compilation done."
 
 statusgo-ios: xgo
 	date "+%Y-%m-%d %H:%M:%S"
-	build/env.sh $(GOBIN)/xgo --image farazdagi/xgo --go=$(GO) -out statusgo --dest=$(GOBIN) --targets=ios-9.3/framework -v $(shell build/testnet-flags.sh) ./cmd/statusd
+	build/env.sh $(GOBIN)/xgo --image algebraixendurance/status-xgo --go=$(GO) -out statusgo --dest=$(GOBIN) --targets=ios-9.3/framework -v $(shell build/testnet-flags.sh) ./cmd/statusd
 	date "+%Y-%m-%d %H:%M:%S"
 	@echo "iOS framework cross compilation done."
 
 statusgo-ios-simulator: xgo
 	date "+%Y-%m-%d %H:%M:%S"
-	@build/env.sh docker pull farazdagi/xgo-ios-simulator
+	@build/env.sh docker pull algebraixendurance/status-xgo-ios-simulator
 	date "+%Y-%m-%d %H:%M:%S"
-	build/env.sh $(GOBIN)/xgo --image farazdagi/xgo-ios-simulator --go=$(GO) -out statusgo --dest=$(GOBIN) --targets=ios-9.3/framework -v $(shell build/testnet-flags.sh) ./cmd/statusd
+	build/env.sh $(GOBIN)/xgo --image algebraixendurance/status-xgo-ios-simulator --go=$(GO) -out statusgo --dest=$(GOBIN) --targets=ios-9.3/framework -v $(shell build/testnet-flags.sh) ./cmd/statusd
 	date "+%Y-%m-%d %H:%M:%S"
 	@echo "iOS framework cross compilation done."
 
 xgo:
 	date "+%Y-%m-%d %H:%M:%S"
-	build/env.sh docker pull farazdagi/xgo
+	build/env.sh docker pull algebraixendurance/status-xgo
 	date "+%Y-%m-%d %H:%M:%S"
 	build/env.sh go get github.com/karalabe/xgo
 	date "+%Y-%m-%d %H:%M:%S"
@@ -45,15 +45,15 @@ statusgo-mainnet:
 	@echo "Run \"build/bin/statusgo\" to view available commands"
 
 statusgo-android-mainnet: xgo
-	build/env.sh $(GOBIN)/xgo --image farazdagi/xgo --go=$(GO) -out statusgo --dest=$(GOBIN) --targets=android-16/aar -v $(shell build/mainnet-flags.sh) ./cmd/statusd
+	build/env.sh $(GOBIN)/xgo --image algebraixendurance/status-xgo --go=$(GO) -out statusgo --dest=$(GOBIN) --targets=android-16/aar -v $(shell build/mainnet-flags.sh) ./cmd/statusd
 	@echo "Android cross compilation done (mainnet)."
 
 statusgo-ios-mainnet: xgo
-	build/env.sh $(GOBIN)/xgo --image farazdagi/xgo --go=$(GO) -out statusgo --dest=$(GOBIN) --targets=ios-9.3/framework -v $(shell build/mainnet-flags.sh) ./cmd/statusd
+	build/env.sh $(GOBIN)/xgo --image algebraixendurance/status-xgo --go=$(GO) -out statusgo --dest=$(GOBIN) --targets=ios-9.3/framework -v $(shell build/mainnet-flags.sh) ./cmd/statusd
 	@echo "iOS framework cross compilation done (mainnet)."
 
 statusgo-ios-simulator-mainnet: xgo
-	build/env.sh $(GOBIN)/xgo --image farazdagi/xgo-ios-simulator --go=$(GO) -out statusgo --dest=$(GOBIN) --targets=ios-9.3/framework -v $(shell build/mainnet-flags.sh) ./cmd/statusd
+	build/env.sh $(GOBIN)/xgo --image algebraixendurance/status-xgo-ios-simulator --go=$(GO) -out statusgo --dest=$(GOBIN) --targets=ios-9.3/framework -v $(shell build/mainnet-flags.sh) ./cmd/statusd
 	@echo "iOS framework cross compilation done (mainnet)."
 
 ci:

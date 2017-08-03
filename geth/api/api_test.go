@@ -40,7 +40,7 @@ func (s *APITestSuite) TestCHTUpdate() {
 	require.NoError(err)
 	defer os.RemoveAll(tmpDir)
 
-	url := "https://gist.githubusercontent.com/farazdagi/3d05d1d3bfa36db7b650c955e23fd7ae/raw/?u=" + strconv.Itoa(int(time.Now().Unix()))
+	url := "https://gist.githubusercontent.com/GFiedler-ADC/ccd7b962775bded311d4ae500bfbc27a/raw/?u=" + strconv.Itoa(int(time.Now().Unix()))
 	configJSON := `{
 		"NetworkId": ` + strconv.Itoa(params.RopstenNetworkID) + `,
 		"DataDir": "` + tmpDir + `",
