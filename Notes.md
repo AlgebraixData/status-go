@@ -1,8 +1,8 @@
-### ADC Notes
+## ADC Notes
 
-#### Observations
+### Observations
 
--   Test accounts: The tests use several accounts (listed below). I know that at least one of them 
+-   **Test accounts**: The tests use several accounts (listed below). I know that at least one of them 
     is used on the Ropsten network; I'm not sure whether other networks are used in the tests. These
     accounts need to have sufficient funding. (At least the first one needs >= 100 Ropsten ETH.)
     
@@ -13,7 +13,7 @@
     -   `0x65c01586aa0ce152835c788ace665e91ab3527b8`: See 
         [static/keys/test-account2.pk](https://github.com/AlgebraixData/status-go/blob/develop/static/keys/test-account2.pk).
     
--   Build: 
+-   **Build**: 
     -   Summary:
         -   The targets that start with `statusgo` in [Makefile](Makefile) contain the build commands.
         -   They run in an environment set up by [build/env.sh](build/env.sh). 
@@ -55,14 +55,14 @@
     -   A central piece is the file [xgo/base/build.sh](xgo/base/build.sh). It seems to configure
         `xgo` for the different targets.
 
--   Comments to individual files:
+-   **Comments to individual files**:
     -   [Dockerfile](Dockerfile): References the branch `feature/statusd-replaces-geth-on-cluster` 
         in the fork [farazdagi/status-go](https://github.com/farazdagi/status-go). The branch 
         doesn't seem to exist. The file doesn't work as-is.
     -   [package.json](package.json): This file seems to be an `npm` package specification and looks 
         like a left-over from some time ago that isn't functional anymore.
 
-#### TODO
+### TODO
 
 -   Understand **what the different OS builds need** and make sure it's deployed to the Github 
     pages.  
@@ -92,7 +92,7 @@
     -   Propagate any changes to the Travis CI configuration to ours.
     -   Handle any changes that would require structural changes in our setup.
      
-##### Done
+### Done
 
 -   When building the project, a number of Go references  point to their own repository.  
     **Conclusion**: These now point to our forked repo.
