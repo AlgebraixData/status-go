@@ -331,7 +331,6 @@ func (s *BackendTestSuite) TestDiscardQueuedTransaction() {
 }
 
 func (s *BackendTestSuite) TestCompleteMultipleQueuedTransactions() {
-	s.Suite.T().SkipNow() // TODOG Test is crashing. Skip to see whether the others succeed.
 	require := s.Require()
 	require.NotNil(s.backend)
 
