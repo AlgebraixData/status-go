@@ -22,9 +22,6 @@ notifications:
 
 before_install:
   - echo "*** $(date '+%Y-%m-%d %H:%M:%S') before_install"
-  - pip --version
-  - pip install --user awscli
-  - aws --version
 
 install:
   - echo "*** $(date '+%Y-%m-%d %H:%M:%S') install"
@@ -74,17 +71,26 @@ before_deploy:
   - rm -rf build/bin/statusgo-ios-9.3-framework-simulator \
   - zipinfo build/bin/Statusgo-framework-simulator.zip
   - rm -f build/bin/xgo
+  - export S3_DEPLOY_DIR="${TRAVIS_BRANCH}-`date -ju "+%Y-%m-%d-%H-%M-%S"`"
+  - echo $S3_DEPLOY_DIR
 
 deploy:
-  provider: pages
+  provider: s3
+  access_key_id:
+    secure: "yOZZbhD5GTLoAG9qFg10opXBepgCx/aV5aQxRNKLvvT7OOm7yLUbuhNdOKMDsdShwZdMV8Nc9yj4lYA14015z/fa6lO73D+U5BOJizD0rN21lIMsQMUo8VJAgy79kjap4rJBE1+fEesUPMwRHlrF0REkKpbtCTMoUSMtlZlSbbVU+CWkBWV7lhtgpb/S5VdO60reKvz0QbiN0fBNM2GTpHfmNL4Xh5FrkvL80Jd0AxpQFzQiFCYuyuKDZXal89bM+DXXi3I8DrUE6fNQ+vCgl6zuEnpFNkUuLpEvFUYY5lRX48etmxiuMcO0uPg7i1SYhL2qV3KaXmCTtDT0wzbJ3XLBklz2bIC3oAU3flb85DUxXImhJ/nHwOFIqH/Qu9t0tofkgfmM9Rp9IATcUpFcnmUOr9YvDuCoUZ9tvST912QdHFEn9XWq5RF4kannNVqfANwym8BOnuOy0JH4vR3DBdSatCOwGhW7Eqe0wnmRZAip5t1yrtkgEgkqky6vj78asdKEed4pYSTs8E1CQ2lryzNxd/aPNNBSRh/CFoqaAzSJKyZArD45TuNXiUvmu3MXM/1G6Kl61s7EYlkpoeca2kXJy4JyltGjuhzCvtObFSYX0QEBhek6wBLGDXk0wmvytglITfyVYIW9vXtLlD6Amx/lJ2YXIuvTcSWeV+NRfWw="
+  secret_access_key:
+    secure: "bz6F0aRBjQ9+uHMlnQC6Oz6qFCexsuShVJP26bd+mdUMbc+BXgdtO4P7NvrkqoCSeTsoTGzy+RfChVoFUsfrfZYRfGwiXKvraVLQxjTGSLu1/wialFZNn+AvREkJ/ZZe5GUxVBvXp+2AfN9Ek2Fd/dvn7qCz/7H8mLGJJ+v+JsGZsHbK07slLV4AMiYCdh7DrT0VAwvHaRzY101qA8rq91RhqPWPyF93he+bIaWnRnHokVbtP8whEHQEwMwBy0zvOlLTwcRMGpd/G2bwWJSfdHXFpgB752pIY++Vsql09inR9fzRB4GUhtHeU1wq//g+6Wpf3GemdY32WhJ+0UXXC+KDg7501wWHWBx81ou7ajNcHT5OMNhv3mBZbTLU/dk4xz2RBihpUs5wCDXA3lyalqmXZ7igh8oVrWLbMQOr2xmZSa9e3YNlPC+Bdmh0jZPikIWREwt6Umo5VQNo3UmBRasTMtJ+VWZJf8N7VCPMVu1YNjucCUukm42UdqFPk0hhBJ0QtvbztwBiWoKW9XhTO7sGbyrEztdDIoWbREEsDbiub/eAaOvZseJfngvCBx81H1o3FuH5tg9WwpMjDHFgIWgrsZlrf5VlvdToE9t+gI0WT1GFpkxDXDONT4pYcCaFSnKYh7PDXeC+wGMTTQHKtRjqV0QstnNtFTngFlxE828="
+  region: us-east-1
+  acl: public_read
+  bucket: "adc-status-go"
+  upload_dir: $S3_DEPLOY_DIR
+  local_dir: build/bin
   skip_cleanup: true
-  github_token: $GITHUB_TOKEN
   on:
     branch:
       - master
       - develop
-  local_dir: build/bin
-  target_branch: gh-pages
+      - feature/version-deployed-artifacts
 
 after_deploy:
   - echo "*** $(date '+%Y-%m-%d %H:%M:%S') after_deploy"
