@@ -22,8 +22,8 @@ notifications:
 
 before_install:
   - echo "*** $(date '+%Y-%m-%d %H:%M:%S') before_install"
-  - date -ju +"%Y-%m-%d-%H-%M-%S"
-  - export S3_DEPLOY_DIR="${TRAVIS_BRANCH}-`date -ju +"%Y-%m-%d-%H-%M-%S"`"
+  - date -u +"%Y-%m-%d-%H-%M-%S"
+  - export S3_DEPLOY_DIR="${TRAVIS_BRANCH}-`date -u +"%Y-%m-%d-%H-%M-%S"`"
   - echo $S3_DEPLOY_DIR
 
 install:
@@ -73,7 +73,7 @@ before_deploy:
   - rm -rf build/bin/statusgo-ios-9.3-framework-simulator
   - zipinfo build/bin/Statusgo-framework-simulator.zip
   - rm -f build/bin/xgo
-  - export S3_DEPLOY_DIR="${TRAVIS_BRANCH}-`date -ju +"%Y-%m-%d-%H-%M-%S"`"
+  - export S3_DEPLOY_DIR="${TRAVIS_BRANCH}-`date -u +"%Y-%m-%d-%H-%M-%S"`"
   - echo $S3_DEPLOY_DIR
 
 deploy:
