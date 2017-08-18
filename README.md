@@ -5,11 +5,11 @@ See (and maintain) our [notes](Notes.md).
 Build results are accessible through S3. 
 * The bucket is "adc-status-go". It is followed by a path that consists of the branch name 
   (typically "master" or "develop"), followed by a dash ("-"), followed by a timestamp in the format
-  "%Y-%m-%d-%H-%M-%S".
-* For write access, you need ADC AWS keys. (Travis CI has write access through encrypted keys.)
+  `%Y-%m-%d-%H-%M-%S`. The branch name may contain forward slashes ("/"); this works normally.
+* For write access, you need ADC AWS keys. We provide write access to the Travis CI script 
+  [.travis.yml](.travis.yml) through encrypted keys in the file. They only work in this project.
 * For read access, no keys are necessary. A URL in the form 
-  `https://s3.amazonaws.com/adc-status-go/<branch>-<timestamp>/<filename>` works. (The branch may
-  contain forward slashes "/".) 
+  `https://s3.amazonaws.com/adc-status-go/<branch>-<timestamp>/<filename>` works.  
  
 
 [![Master Build Status](https://img.shields.io/travis/AlgebraixData/status-go/master.svg?label=build/master)](https://github.com/AlgebraixData/status-go/tree/master)

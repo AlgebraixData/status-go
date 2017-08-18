@@ -89,7 +89,6 @@ deploy:
     branch:
       - master
       - develop
-      - feature/version-deployed-artifacts
 
 after_deploy:
   - echo "*** $(date -u '+%Y-%m-%d %H:%M:%S') after_deploy"
