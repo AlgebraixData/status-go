@@ -2,8 +2,15 @@
 
 See (and maintain) our [notes](Notes.md).
 
-Build results are accessible through the
-[AlgebraixData/status-im Fork Github page](https://algebraixdata.github.io/status-go/).
+Build results are accessible through S3. 
+* The bucket is "adc-status-go". It is followed by a path that consists of the branch name 
+  (typically "master" or "develop"), followed by a dash ("-"), followed by a timestamp in the format
+  "%Y-%m-%d-%H-%M-%S".
+* For write access, you need ADC AWS keys. (Travis CI has write access through encrypted keys.)
+* For read access, no keys are necessary. A URL in the form 
+  `https://s3.amazonaws.com/adc-status-go/<branch>-<timestamp>/<filename>` works. (The branch may
+  contain forward slashes "/".) 
+ 
 
 [![Master Build Status](https://img.shields.io/travis/AlgebraixData/status-go/master.svg?label=build/master)](https://github.com/AlgebraixData/status-go/tree/master)
 [![Develop Build Status](https://img.shields.io/travis/AlgebraixData/status-go/develop.svg?label=build/develop)](https://github.com/AlgebraixData/status-go/tree/develop)
