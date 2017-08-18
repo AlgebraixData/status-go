@@ -21,17 +21,17 @@ notifications:
 # The remainder of this file are the steps of the hardcoded Travis sequence in the order they are executed.
 
 before_install:
-  - echo "*** $(date '+%Y-%m-%d %H:%M:%S') before_install"
+  - echo "*** $(date -u '+%Y-%m-%d %H:%M:%S') before_install"
 
 install:
-  - echo "*** $(date '+%Y-%m-%d %H:%M:%S') install"
+  - echo "*** $(date -u '+%Y-%m-%d %H:%M:%S') install"
   - go get golang.org/x/tools/cmd/cover
 
 before_script:
-  - echo "*** $(date '+%Y-%m-%d %H:%M:%S') before_script"
+  - echo "*** $(date -u '+%Y-%m-%d %H:%M:%S') before_script"
 
 script:
-  - echo "*** $(date '+%Y-%m-%d %H:%M:%S') script"
+  - echo "*** $(date -u '+%Y-%m-%d %H:%M:%S') script"
   # In the original Travis CI configuration, `make ci` is all that is called. IMO the output
   # is easier to read if the commands are called individually here. This also means that any
   # changes to the "ci" target of the Makefile need to be propagated to here.
@@ -46,45 +46,52 @@ script:
   # - build/env.sh go test -timeout 40m -v -cpu 1 -p 1 -parallel 1 -race ./geth/api
 
 before_cache:
-  - echo "*** $(date '+%Y-%m-%d %H:%M:%S') before_cache"
+  - echo "*** $(date -u '+%Y-%m-%d %H:%M:%S') before_cache"
 
 cache:
   directories:
   - .ethereumtest
 
 after_success:
-  - echo "*** $(date '+%Y-%m-%d %H:%M:%S') after_success"
+  - echo "*** $(date -u '+%Y-%m-%d %H:%M:%S') after_success"
 
 after_failure:
-  - echo "*** $(date '+%Y-%m-%d %H:%M:%S') after_failure"
+  - echo "*** $(date -u '+%Y-%m-%d %H:%M:%S') after_failure"
 
 before_deploy:
-  - echo "*** $(date '+%Y-%m-%d %H:%M:%S') before_deploy"
+  - echo "*** $(date -u '+%Y-%m-%d %H:%M:%S') before_deploy"
   - make statusgo-android
   - make statusgo-ios-simulator && mv build/bin/statusgo-ios-9.3-framework build/bin/statusgo-ios-9.3-framework-simulator
   - make statusgo-ios
-  - cp build/index.html build/bin/index.html
   - pushd build/bin/statusgo-ios-9.3-framework && zip -ry ../Statusgo-framework.zip Statusgo.framework && popd
   - rm -rf build/bin/statusgo-ios-9.3-framework
   - zipinfo build/bin/Statusgo-framework.zip
   - pushd build/bin/statusgo-ios-9.3-framework-simulator && zip -ry ../Statusgo-framework-simulator.zip Statusgo.framework && popd
-  - rm -rf build/bin/statusgo-ios-9.3-framework-simulator \
+  - rm -rf build/bin/statusgo-ios-9.3-framework-simulator
   - zipinfo build/bin/Statusgo-framework-simulator.zip
   - rm -f build/bin/xgo
+  - export S3_DEPLOY_DIR="${TRAVIS_BRANCH}-$(date -u '+%Y-%m-%d-%H-%M-%S')"
+  - echo $S3_DEPLOY_DIR
 
 deploy:
-  provider: pages
+  provider: s3
+  access_key_id:
+    secure: "yOZZbhD5GTLoAG9qFg10opXBepgCx/aV5aQxRNKLvvT7OOm7yLUbuhNdOKMDsdShwZdMV8Nc9yj4lYA14015z/fa6lO73D+U5BOJizD0rN21lIMsQMUo8VJAgy79kjap4rJBE1+fEesUPMwRHlrF0REkKpbtCTMoUSMtlZlSbbVU+CWkBWV7lhtgpb/S5VdO60reKvz0QbiN0fBNM2GTpHfmNL4Xh5FrkvL80Jd0AxpQFzQiFCYuyuKDZXal89bM+DXXi3I8DrUE6fNQ+vCgl6zuEnpFNkUuLpEvFUYY5lRX48etmxiuMcO0uPg7i1SYhL2qV3KaXmCTtDT0wzbJ3XLBklz2bIC3oAU3flb85DUxXImhJ/nHwOFIqH/Qu9t0tofkgfmM9Rp9IATcUpFcnmUOr9YvDuCoUZ9tvST912QdHFEn9XWq5RF4kannNVqfANwym8BOnuOy0JH4vR3DBdSatCOwGhW7Eqe0wnmRZAip5t1yrtkgEgkqky6vj78asdKEed4pYSTs8E1CQ2lryzNxd/aPNNBSRh/CFoqaAzSJKyZArD45TuNXiUvmu3MXM/1G6Kl61s7EYlkpoeca2kXJy4JyltGjuhzCvtObFSYX0QEBhek6wBLGDXk0wmvytglITfyVYIW9vXtLlD6Amx/lJ2YXIuvTcSWeV+NRfWw="
+  secret_access_key:
+    secure: "bz6F0aRBjQ9+uHMlnQC6Oz6qFCexsuShVJP26bd+mdUMbc+BXgdtO4P7NvrkqoCSeTsoTGzy+RfChVoFUsfrfZYRfGwiXKvraVLQxjTGSLu1/wialFZNn+AvREkJ/ZZe5GUxVBvXp+2AfN9Ek2Fd/dvn7qCz/7H8mLGJJ+v+JsGZsHbK07slLV4AMiYCdh7DrT0VAwvHaRzY101qA8rq91RhqPWPyF93he+bIaWnRnHokVbtP8whEHQEwMwBy0zvOlLTwcRMGpd/G2bwWJSfdHXFpgB752pIY++Vsql09inR9fzRB4GUhtHeU1wq//g+6Wpf3GemdY32WhJ+0UXXC+KDg7501wWHWBx81ou7ajNcHT5OMNhv3mBZbTLU/dk4xz2RBihpUs5wCDXA3lyalqmXZ7igh8oVrWLbMQOr2xmZSa9e3YNlPC+Bdmh0jZPikIWREwt6Umo5VQNo3UmBRasTMtJ+VWZJf8N7VCPMVu1YNjucCUukm42UdqFPk0hhBJ0QtvbztwBiWoKW9XhTO7sGbyrEztdDIoWbREEsDbiub/eAaOvZseJfngvCBx81H1o3FuH5tg9WwpMjDHFgIWgrsZlrf5VlvdToE9t+gI0WT1GFpkxDXDONT4pYcCaFSnKYh7PDXeC+wGMTTQHKtRjqV0QstnNtFTngFlxE828="
+  region: us-east-1
+  acl: public_read
+  bucket: "adc-status-go"
+  upload_dir: $S3_DEPLOY_DIR
+  local_dir: build/bin
   skip_cleanup: true
-  github_token: $GITHUB_TOKEN
   on:
     branch:
       - master
       - develop
-  local_dir: build/bin
-  target_branch: gh-pages
 
 after_deploy:
-  - echo "*** $(date '+%Y-%m-%d %H:%M:%S') after_deploy"
+  - echo "*** $(date -u '+%Y-%m-%d %H:%M:%S') after_deploy"
 
 after_script:
-  - echo "*** $(date '+%Y-%m-%d %H:%M:%S') after_script"
+  - echo "*** $(date -u '+%Y-%m-%d %H:%M:%S') after_script"

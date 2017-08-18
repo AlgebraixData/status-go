@@ -64,10 +64,6 @@
 
 ### TODO
 
--   Understand **what the different OS builds need** and make sure it's deployed to the Github 
-    pages.  
-    **Ben et al are working on this.**
-
 -   **Create an organization on Docker hub** (rather than continue to use Endurance's personal 
     account), move the two Docker images that are used in the build to the organization and set up 
     the integration with Github to automatically build them. Or decide what else we want to do with 
@@ -93,6 +89,10 @@
     -   Handle any changes that would require structural changes in our setup.
      
 ### Done
+
+-   Understand what the different OS builds need and make sure it's deployed to the Github 
+    pages.  
+    **Conclusion**: What we are deploying seems to be enough.
 
 -   When building the project, a number of Go references  point to their own repository.  
     **Conclusion**: These now point to our forked repo.
